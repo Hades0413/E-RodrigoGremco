@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Accion"
+  },
+  {
+    "id": 2,
+    "nombre": "Aventura"
+  },
+  {
+    "id": 3,
+    "nombre": "RPG"
+  },
+  {
+    "id": 4,
+    "nombre": "Shooter"
+  },
+  {
+    "id": 5,
+    "nombre": "Deportes"
+  },
+  {
+    "id": 6,
+    "nombre": "Simulacion"
+  },
+  {
+    "id": 7,
+    "nombre": "Estrategia"
+  }
+]

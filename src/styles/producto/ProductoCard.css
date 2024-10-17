@@ -1,0 +1,33 @@
+.image-container {
+  height: 194px; /* Altura fija para el contenedor de la imagen */
+  width: 100%; /* Ancho completo */
+  overflow: hidden; /* Oculta cualquier parte de la imagen que sobrepase el contenedor */
+}
+
+.product-image {
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Altura completa */
+  object-fit: cover; /* Ajusta la imagen sin distorsionarla */
+  filter: saturate(1.2);
+}
+
+.icon {
+  width: 24px; /* Ancho del ícono */
+  height: 24px; /* Alto del ícono */
+  transition: fill 0.3s ease, transform 0.3s ease; /* Suaviza el color y el tamaño */
+  cursor: pointer;
+}
+
+/* Hover para el ícono de corazón */
+.heart-icon:hover path {
+  fill: #ff1744; /* Rojo brillante */
+}
+
+/* Hover para el ícono de compartir */
+.share-icon:hover path {
+  fill: #2979ff; /* Azul brillante */
+}
+
+.icon:hover {
+  transform: scale(1.2); /* Aumenta el tamaño al 120% */
+}

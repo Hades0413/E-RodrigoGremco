@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "nombre": "Doom Eternal",
+    "descripcion": "FPS de accion intensa donde te enfrentas a hordas de demonios.",
+    "precio": 59.99,
+    "stock_disponible": 200,
+    "imagen_producto": "https://example.com/doometernal.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 2,
+    "nombre": "The Last of Us Part II",
+    "descripcion": "Juego de accion y aventura con una narrativa emocional y combates brutales.",
+    "precio": 49.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/lastofus2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 3,
+    "nombre": "Mortal Kombat 11",
+    "descripcion": "Juego de lucha con movimientos sangrientos y fatalities impresionantes.",
+    "precio": 39.99,
+    "stock_disponible": 120,
+    "imagen_producto": "https://example.com/mortalkombat11.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 4,
+    "nombre": "God of War (2018)",
+    "descripcion": "Kratos regresa con una historia mas profunda y combates viscerales.",
+    "precio": 59.99,
+    "stock_disponible": 180,
+    "imagen_producto": "https://example.com/godofwar2018.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 5,
+    "nombre": "Gears of War 5",
+    "descripcion": "Shooter en tercera persona con accion intensa y violencia grafica.",
+    "precio": 49.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/gearsofwar5.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 6,
+    "nombre": "Dead Space",
+    "descripcion": "Survival horror en el espacio lleno de criaturas grotescas.",
+    "precio": 39.99,
+    "stock_disponible": 100,
+    "imagen_producto": "https://example.com/deadspace.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 7,
+    "nombre": "Dark Souls III",
+    "descripcion": "Juego de rol de accion con combates dificiles y enemigos brutales.",
+    "precio": 49.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/darksouls3.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 4
+  },
+  {
+    "id": 8,
+    "nombre": "Sekiro: Shadows Die Twice",
+    "descripcion": "Juego de accion con combates sangrientos y dificultad desafiante.",
+    "precio": 59.99,
+    "stock_disponible": 130,
+    "imagen_producto": "https://example.com/sekiro.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 5
+  },
+  {
+    "id": 9,
+    "nombre": "Bloodborne",
+    "descripcion": "Juego de accion y horror gotico con combates sangrientos.",
+    "precio": 49.99,
+    "stock_disponible": 110,
+    "imagen_producto": "https://example.com/bloodborne.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 6
+  },
+  {
+    "id": 10,
+    "nombre": "Resident Evil Village",
+    "descripcion": "Survival horror con monstruos aterradores y combates intensos.",
+    "precio": 59.99,
+    "stock_disponible": 190,
+    "imagen_producto": "https://example.com/residentevilvillage.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 7
+  },
+  {
+    "id": 11,
+    "nombre": "Call of Duty: Modern Warfare II",
+    "descripcion": "Shooter en primera persona con accion belica realista y brutal.",
+    "precio": 69.99,
+    "stock_disponible": 200,
+    "imagen_producto": "https://example.com/codmw2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 12,
+    "nombre": "Cyberpunk 2077",
+    "descripcion": "Juego de rol de mundo abierto con violencia grafica y tematica adulta.",
+    "precio": 59.99,
+    "stock_disponible": 180,
+    "imagen_producto": "https://example.com/cyberpunk2077.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 13,
+    "nombre": "Far Cry 6",
+    "descripcion": "Shooter en primera persona ambientado en una revolucion violenta.",
+    "precio": 69.99,
+    "stock_disponible": 170,
+    "imagen_producto": "https://example.com/farcry6.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 14,
+    "nombre": "Assassins Creed Valhalla",
+    "descripcion": "Juego de accion y aventura con combates sangrientos y ambientacion vikinga.",
+    "precio": 59.99,
+    "stock_disponible": 160,
+    "imagen_producto": "https://example.com/acvalhalla.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 4
+  },
+  {
+    "id": 15,
+    "nombre": "Hitman 3",
+    "descripcion": "Juego de sigilo y asesinato con escenarios complejos y violencia calculada.",
+    "precio": 49.99,
+    "stock_disponible": 120,
+    "imagen_producto": "https://example.com/hitman3.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 5
+  },
+  {
+    "id": 16,
+    "nombre": "Shadow of the Tomb Raider",
+    "descripcion": "Juego de accion y aventura con exploracion y combates intensos.",
+    "precio": 59.99,
+    "stock_disponible": 130,
+    "imagen_producto": "https://example.com/shadowoftombraider.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 6
+  },
+  {
+    "id": 17,
+    "nombre": "Red Dead Redemption 2",
+    "descripcion": "Juego de mundo abierto ambientado en el salvaje oeste con violencia realista.",
+    "precio": 69.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/reddead2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 7
+  },
+  {
+    "id": 18,
+    "nombre": "Ghost of Tsushima",
+    "descripcion": "Juego de accion ambientado en el Japon feudal con combates sangrientos.",
+    "precio": 59.99,
+    "stock_disponible": 160,
+    "imagen_producto": "https://example.com/ghostoftsushima.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 19,
+    "nombre": "Watch Dogs: Legion",
+    "descripcion": "Juego de mundo abierto con violencia grafica y piratería digital.",
+    "precio": 59.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/watchdogslegion.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 20,
+    "nombre": "FIFA 23",
+    "descripcion": "Simulador de futbol con accion y competicion en linea.",
+    "precio": 49.99,
+    "stock_disponible": 200,
+    "imagen_producto": "https://example.com/fifa23.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 21,
+    "nombre": "NBA 2K23",
+    "descripcion": "Simulador de baloncesto con graficos impresionantes y jugabilidad realista.",
+    "precio": 59.99,
+    "stock_disponible": 180,
+    "imagen_producto": "https://example.com/nba2k23.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 22,
+    "nombre": "Forza Horizon 5",
+    "descripcion": "Juego de carreras en un mundo abierto con vehiculos increibles y paisajes variados.",
+    "precio": 69.99,
+    "stock_disponible": 170,
+    "imagen_producto": "https://example.com/forzahorizon5.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 23,
+    "nombre": "Gran Turismo 7",
+    "descripcion": "Simulador de carreras con una amplia seleccion de autos y circuitos.",
+    "precio": 59.99,
+    "stock_disponible": 160,
+    "imagen_producto": "https://example.com/granturismo7.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 24,
+    "nombre": "Monster Hunter Rise",
+    "descripcion": "Juego de accion donde caza enormes criaturas en un mundo vibrante.",
+    "precio": 49.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/monsterhunterrise.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 4
+  },
+  {
+    "id": 25,
+    "nombre": "Horizon Forbidden West",
+    "descripcion": "Aventura epica en un mundo post-apocaliptico lleno de criaturas mecanicas.",
+    "precio": 69.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/horizonforbiddenwest.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 5
+  },
+  {
+    "id": 26,
+    "nombre": "Final Fantasy VII Remake",
+    "descripcion": "Reimaginacion del clasico JRPG con graficos impresionantes y una narrativa rica.",
+    "precio": 59.99,
+    "stock_disponible": 180,
+    "imagen_producto": "https://example.com/ffviiremake.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 6
+  },
+  {
+    "id": 27,
+    "nombre": "Persona 5 Royal",
+    "descripcion": "JRPG aclamado por la critica con un estilo artistico unico y una historia cautivadora.",
+    "precio": 49.99,
+    "stock_disponible": 160,
+    "imagen_producto": "https://example.com/persona5royal.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 7
+  },
+  {
+    "id": 28,
+    "nombre": "Demons Souls",
+    "descripcion": "Remake del clasico juego de rol de accion, conocido por su alta dificultad y ambiente oscuro.",
+    "precio": 69.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/demonsouls.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 29,
+    "nombre": "The Witcher 3: Wild Hunt",
+    "descripcion": "RPG de mundo abierto con una narrativa profunda y un mundo expansivo para explorar.",
+    "precio": 39.99,
+    "stock_disponible": 200,
+    "imagen_producto": "https://example.com/thewitcher3.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 30,
+    "nombre": "CyberConnect2",
+    "descripcion": "Un juego de rol de accion con combates dinamicos y una rica narrativa.",
+    "precio": 49.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/cyberconnect2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 31,
+    "nombre": "Assassin's Creed Valhalla",
+    "descripcion": "Juego de accion y aventura en un mundo abierto basado en la epoca vikinga.",
+    "precio": 59.99,
+    "stock_disponible": 120,
+    "imagen_producto": "https://example.com/acvalhalla.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 32,
+    "nombre": "Call of Duty: Modern Warfare II",
+    "descripcion": "Shooter en primera persona con intensas campañas y multijugador.",
+    "precio": 69.99,
+    "stock_disponible": 110,
+    "imagen_producto": "https://example.com/codmw2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 33,
+    "nombre": "Overwatch 2",
+    "descripcion": "Juego de disparos en equipo con heroes unicos y habilidades especiales.",
+    "precio": 39.99,
+    "stock_disponible": 130,
+    "imagen_producto": "https://example.com/overwatch2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 34,
+    "nombre": "Madden NFL 23",
+    "descripcion": "Juego de simulacion de futbol americano con jugabilidad realista.",
+    "precio": 59.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/madden23.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 4
+  },
+  {
+    "id": 35,
+    "nombre": "Resident Evil Village",
+    "descripcion": "Juego de terror en primera persona con una atmosfera escalofriante y enemigos aterradores.",
+    "precio": 49.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/re8.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 5
+  },
+  {
+    "id": 36,
+    "nombre": "Street Fighter V",
+    "descripcion": "Juego de lucha iconico con personajes unicos y mecanicas de combate profundas.",
+    "precio": 29.99,
+    "stock_disponible": 160,
+    "imagen_producto": "https://example.com/sf5.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 6
+  },
+  {
+    "id": 37,
+    "nombre": "The Legend of Zelda: Breath of the Wild",
+    "descripcion": "Aventura en un mundo abierto donde exploras, luchas y resuelves acertijos.",
+    "precio": 59.99,
+    "stock_disponible": 180,
+    "imagen_producto": "https://example.com/zelda.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 7
+  },
+  {
+    "id": 38,
+    "nombre": "Star Wars Jedi: Fallen Order",
+    "descripcion": "Aventura de accion en un mundo de Star Wars con combate y exploracion.",
+    "precio": 49.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/jediorder.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 39,
+    "nombre": "FIFA 23",
+    "descripcion": "Juego de simulacion de futbol con equipos y jugadores reales.",
+    "precio": 59.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/fifa23.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 40,
+    "nombre": "God of War Ragnarök",
+    "descripcion": "Secuela del aclamado juego de accion y aventura con un fuerte enfoque en la narrativa.",
+    "precio": 69.99,
+    "stock_disponible": 120,
+    "imagen_producto": "https://example.com/gowragnarok.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 41,
+    "nombre": "Cyberpunk 2077",
+    "descripcion": "Juego de rol de accion en un mundo abierto con un fuerte enfoque en la narrativa.",
+    "precio": 49.99,
+    "stock_disponible": 90,
+    "imagen_producto": "https://example.com/cyberpunk2077.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 42,
+    "nombre": "Battlefield 2042",
+    "descripcion": "Shooter multijugador masivo con batallas a gran escala.",
+    "precio": 59.99,
+    "stock_disponible": 80,
+    "imagen_producto": "https://example.com/battlefield2042.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 43,
+    "nombre": "Monster Hunter: World",
+    "descripcion": "Juego de accion y aventura donde cazas monstruos en un mundo vibrante.",
+    "precio": 39.99,
+    "stock_disponible": 110,
+    "imagen_producto": "https://example.com/mhw.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  },
+  {
+    "id": 44,
+    "nombre": "Final Fantasy VII Remake",
+    "descripcion": "Reimaginacion del clasico juego de rol con gráficos modernos y jugabilidad actualizada.",
+    "precio": 59.99,
+    "stock_disponible": 120,
+    "imagen_producto": "https://example.com/ff7remake.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 4
+  },
+  {
+    "id": 45,
+    "nombre": "Persona 5 Royal",
+    "descripcion": "Juego de rol japones con una historia profunda y personajes memorables.",
+    "precio": 49.99,
+    "stock_disponible": 130,
+    "imagen_producto": "https://example.com/persona5royal.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 5
+  },
+  {
+    "id": 46,
+    "nombre": "Gran Turismo 7",
+    "descripcion": "Simulador de carreras con graficos impresionantes y vehiculos realistas.",
+    "precio": 69.99,
+    "stock_disponible": 150,
+    "imagen_producto": "https://example.com/gt7.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 6
+  },
+  {
+    "id": 47,
+    "nombre": "A Plague Tale: Requiem",
+    "descripcion": "Aventura narrativa en un mundo medieval afectado por la peste.",
+    "precio": 39.99,
+    "stock_disponible": 110,
+    "imagen_producto": "https://example.com/aplague.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 7
+  },
+  {
+    "id": 48,
+    "nombre": "Horizon Forbidden West",
+    "descripcion": "Juego de accion y aventura en un mundo post-apocaliptico lleno de criaturas mecanicas.",
+    "precio": 69.99,
+    "stock_disponible": 90,
+    "imagen_producto": "https://example.com/horizonfw.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 1
+  },
+  {
+    "id": 49,
+    "nombre": "The Witcher 3: Wild Hunt",
+    "descripcion": "Juego de rol de mundo abierto con una rica narrativa y un vasto mundo para explorar.",
+    "precio": 39.99,
+    "stock_disponible": 140,
+    "imagen_producto": "https://example.com/witcher3.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 2
+  },
+  {
+    "id": 50,
+    "nombre": "Dying Light 2",
+    "descripcion": "Juego de accion y supervivencia en un mundo post-apocaliptico lleno de zombis.",
+    "precio": 49.99,
+    "stock_disponible": 130,
+    "imagen_producto": "https://example.com/dyinglight2.png",
+    "fecha_adicion": "16-10-2024",
+    "categoria_id": 3
+  }
+]

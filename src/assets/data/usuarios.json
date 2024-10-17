@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "nombre": "Hades",
+    "correo_electronico": "xxx@hotmail.com",
+    "contrasena": "asd",
+    "direccion_envio": "Calle Falsa 123, Ciudad",
+    "es_admin": true,
+    "fecha_registro": "01-01-2024"
+  },
+  {
+    "id": 2,
+    "nombre": "Marie Curie",
+    "correo_electronico": "ChatanasDelNobel@example.com",
+    "contrasena": "asd",
+    "direccion_envio": "Avenida Siempre Viva 456, Ciudad",
+    "es_admin": false,
+    "fecha_registro": "02-01-2024"
+  },
+  {
+    "id": 3,
+    "nombre": "Chupetin Trujillo",
+    "correo_electronico": "TudueñodelGaaa@example.com",
+    "contrasena": "asd",
+    "direccion_envio": "Boulevard de los Suenos Rotos 789, Ciudad",
+    "es_admin": false,
+    "fecha_registro": "03-01-2024"
+  },
+  {
+    "id": 4,
+    "nombre": "Ana de Armas",
+    "correo_electronico": "anadearmamasita@example.com",
+    "contrasena": "asd",
+    "direccion_envio": "Calle de la Paz 321, Ciudad",
+    "es_admin": false,
+    "fecha_registro": "04-01-2024"
+  },
+  {
+    "id": 5,
+    "nombre": "Jose Luis Rodriguez",
+    "correo_electronico": "elpuma@example.com",
+    "contrasena": "asd",
+    "direccion_envio": "Camino de la Libertad 654, Ciudad",
+    "es_admin": false,
+    "fecha_registro": "05-01-2024"
+  },
+  {
+    "id": 6,
+    "nombre": "Tio Vilchez",
+    "correo_electronico": "siemprefiel@example.com",
+    "contrasena": "asd",
+    "direccion_envio": "Plaza Mayor 100, Ciudad",
+    "es_admin": false,
+    "fecha_registro": "06-01-2024"
+  }
+]
