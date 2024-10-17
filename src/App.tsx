@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import LoaderWrapper from "./components/ui/LoaderWrapper";
 import "@sweetalert2/theme-dark/dark.css";
 import "@sweetalert2/theme-dark/dark.css";
+import Users from "./pages/Users";
 import Producto from "./pages/Producto";
 import Categoria from "./pages/Categoria";
 
@@ -27,6 +28,7 @@ function App() {
             }
           >
             <Route path="/home" element={<Home />} />
+            <Route path="/usuarios" element={<Users />} />
             <Route path="/producto" element={<Producto />} />
             <Route path="/categoria" element={<Categoria />} />
           </Route>
