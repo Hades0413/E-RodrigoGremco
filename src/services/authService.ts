@@ -128,6 +128,12 @@ export const logout = async () => {
 const checkAndRegisterUser = async (user: any) => {
   const usuarioRef = collection(db, "usuarios");
 
+  //const para datos predeterminados
+  const direccionEnvioPredeterminada = "Sin datos de dirección";
+  const passwordPredeterminado =
+    "$2a$10$rEfXZL2hp3ESC8PVjw4tu.VSoJXErdamdTYqpLhREEtqSIAtxB9bG";
+  const emailPredeterminada = "El Usuario no cuenta con Email Público";
+
   try {
     const userQuery = query(
       usuarioRef,
@@ -142,9 +148,9 @@ const checkAndRegisterUser = async (user: any) => {
       const nuevoUsuario: Usuario = {
         id: newUserId,
         nombre: user.displayName || user.email,
-        correo_electronico: user.email,
-        contrasena: "",
-        direccion_envio: "",
+        correo_electronico: user.email || emailPredeterminada,
+        contrasena: passwordPredeterminado,
+        direccion_envio: direccionEnvioPredeterminada /* "" */,
         es_admin: false,
         fecha_registro: fechaRegistro,
       };
