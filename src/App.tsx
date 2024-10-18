@@ -10,6 +10,7 @@ import "@sweetalert2/theme-dark/dark.css";
 import Users from "./pages/Users";
 import Producto from "./pages/Producto";
 import Categoria from "./pages/Categoria";
+import Preguntas from "./pages/Preguntas";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
             <Route path="/usuarios" element={<Users />} />
             <Route path="/producto" element={<Producto />} />
             <Route path="/categoria" element={<Categoria />} />
+            <Route path="/preguntas" element={<Preguntas />} />
+           
           </Route>
         </Routes>
       </Router>

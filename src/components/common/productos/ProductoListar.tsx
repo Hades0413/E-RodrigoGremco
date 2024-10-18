@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchProductos } from "../../../services/productoService";
 import ProductCard from "./ProductoCard";
-import { Box } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebase.config";
+import "../../../styles/producto/ProductoListar.css";
 
 interface Producto {
   id: number;
@@ -28,19 +29,11 @@ const ProductoListar: React.FC = () => {
 
   const fetchCategorias = async () => {
     try {
-      console.log("Intentando conectarse a la colección 'categorias'...");
       const querySnapshot = await getDocs(collection(db, "categorias"));
-      console.log("Conexión exitosa a la colección 'categorias'.");
-
       const categoriasArray = querySnapshot.docs.map((doc) => ({
         id: doc.data().id,
         nombre: doc.data().nombre,
       })) as Categoria[];
-
-      console.log(
-        "Categorías obtenidas:",
-        JSON.stringify(categoriasArray, null, 2)
-      );
       setCategorias(categoriasArray);
     } catch (err) {
       console.error("Error al obtener las categorías: ", err);
@@ -64,12 +57,56 @@ const ProductoListar: React.FC = () => {
   };
 
   if (loading) {
-    return <p>Cargando productos...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 3,
+          justifyContent: "center",
+          padding: 2,
+        }}
+      >
+        {Array.from(new Array(12)).map((_, index) => (
+          <Skeleton
+            key={index}
+            variant="rectangular"
+            width={345}
+            height={400}
+            sx={{ backgroundColor: "#d6d6d6", borderRadius: 1 }}
+          />
+        ))}
+      </Box>
+    );
   }
 
   return (
     <div>
-      <h2>Lista de Productos</h2>
+      <Typography
+        variant="h2"
+        component="h1"
+        sx={{
+          marginTop: 5,
+          fontWeight: "bold",
+          textAlign: "center",
+          color: "#ffffff",
+          textShadow: "0 0 10px #9932CC, 0 0 20px #9932CC, 0 0 30px #9932CC",
+          marginBottom: "2rem",
+          fontFamily: "Orbitron, sans-serif",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          // Responsiveness
+          fontSize: {
+            xs: "1.5rem", // Tamaño más pequeño en pantallas móviles
+            sm: "2rem", // Tamaño en pantallas pequeñas
+            md: "3rem", // Tamaño medio en tablets
+            lg: "4rem", // Tamaño mayor en pantallas grandes
+          },
+        }}
+      >
+        LISTADO DE PRODUCTOS
+      </Typography>
+
       {productos.length > 0 ? (
         <Box
           sx={{
@@ -95,7 +132,9 @@ const ProductoListar: React.FC = () => {
           ))}
         </Box>
       ) : (
-        <p>No hay productos disponibles.</p>
+        <Typography variant="body1" sx={{ textAlign: "center", color: "#fff" }}>
+          No hay productos disponibles.
+        </Typography>
       )}
     </div>
   );

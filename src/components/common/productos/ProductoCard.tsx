@@ -1,10 +1,21 @@
+import React from 'react';
 import {
   Card,
   CardContent,
   CardMedia,
   Typography,
   Button,
+  Box,
+  Chip,
 } from "@mui/material";
+
+// Importa los íconos personalizados
+import SportsEsports from '../../icons/SportsEsports';
+import AttachMoney from '../../icons/AttachMoney';
+import Inventory from '../../icons/Inventory';
+import Event from '../../icons/Event';
+import Category from '../../icons/Category';
+
 import "../../../styles/producto/ProductoCard.css";
 
 interface ProductCardProps {
@@ -18,7 +29,7 @@ interface ProductCardProps {
   categoria_nombre: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductoCard: React.FC<ProductCardProps> = ({
   nombre,
   descripcion,
   precio,
@@ -34,13 +45,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
         width: 345,
         margin: "0 auto",
         position: "relative",
-        transition: "transform 0.3s",
-        "&:hover": {
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
+        transition: "transform 0.3s, box-shadow 0.3s",
+        background: 'linear-gradient(145deg, #2e1e4f 0%, #4a2a7a 100%)',
+        color: '#e0b0ff',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        '&:hover': {
+          transform: 'scale(1.03)',
+          boxShadow: '0 0 25px rgba(224, 176, 255, 0.5)',
         },
       }}
     >
-      <div className="image-container" style={{ position: "relative" }}>
+      <Box className="image-container" sx={{ position: "relative" }}>
         <CardMedia
           component="img"
           className="product-image"
@@ -48,65 +64,86 @@ const ProductCard: React.FC<ProductCardProps> = ({
           alt={nombre}
           sx={{ height: 194, objectFit: "cover" }}
         />
-        <div
-          style={{
+        <Box
+          sx={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.15)",
+            background: 'linear-gradient(to top, rgba(46, 30, 79, 0.8) 0%, rgba(46, 30, 79, 0) 100%)',
             zIndex: 1,
           }}
         />
-        <div
-          style={{
-            position: "absolute",
+        <Chip
+          icon={<SportsEsports />}
+          label={categoria_nombre}
+          sx={{
+            position: 'absolute',
             top: 10,
             right: 10,
-            display: "flex",
+            backgroundColor: 'rgba(224, 176, 255, 0.2)',
+            color: '#e0b0ff',
             zIndex: 2,
           }}
-        ></div>
-      </div>
-      <CardContent>
+        />
+      </Box>
+      <CardContent sx={{ padding: 3 }}>
         <Typography
           variant="h6"
           component="div"
-          sx={{ fontWeight: "bold", textAlign: "center" }}
+          sx={{ fontWeight: "bold", textAlign: "center", marginBottom: 2, color: '#e0b0ff' }}
         >
           {nombre}
         </Typography>
         <Typography
           variant="body2"
-          sx={{ color: "text.secondary", marginBottom: 2 }}
+          sx={{ color: "#c0a0e0", marginBottom: 2 }}
         >
           {descripcion}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Precio: ${precio.toFixed(2)}
-        </Typography>
-        <Typography variant="body2" sx={{ marginBottom: 2 }}>
-          Stock disponible: {stock_disponible}
-        </Typography>
-        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-          Fecha de adición: {new Date(fecha_adicion).toLocaleDateString()}
-        </Typography>
-        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-          ID de categoría: {categoria_id}
-        </Typography>
-        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-          Categoría: {categoria_nombre}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+          <Box component="span" sx={{ marginRight: 1 }}>
+            <AttachMoney style={{ color: '#e0b0ff' }} />
+          </Box>
+          <Typography variant="body1" sx={{ fontWeight: "bold", color: '#e0b0ff' }}>
+            ${precio.toFixed(2)}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+          <Box component="span" sx={{ marginRight: 1 }}>
+            <Inventory style={{ color: '#e0b0ff' }} />
+          </Box>
+          <Typography variant="body2" sx={{ color: '#c0a0e0' }}>
+            Stock disponible: {stock_disponible}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+          <Box component="span" sx={{ marginRight: 1 }}>
+            <Event style={{ color: '#e0b0ff' }} />
+          </Box>
+          <Typography variant="caption" sx={{ color: '#c0a0e0' }}>
+            Fecha de adición: {new Date(fecha_adicion).toLocaleDateString()}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+          <Box component="span" sx={{ marginRight: 1 }}>
+            <Category style={{ color: '#e0b0ff' }} />
+          </Box>
+          <Typography variant="caption" sx={{ color: '#c0a0e0' }}>
+            ID de categoría: {categoria_id}
+          </Typography>
+        </Box>
         <Button
           variant="contained"
+          startIcon={<SportsEsports />}
           sx={{
-            backgroundColor: "green",
-            color: "white",
+            backgroundColor: "#9932CC",
+            color: "#ffffff",
             marginTop: 2,
             width: "100%",
-            "&:hover": {
-              backgroundColor: "darkgreen",
+            '&:hover': {
+              backgroundColor: "#8B008B",
             },
           }}
         >
@@ -117,4 +154,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
-export default ProductCard;
+export default ProductoCard;
