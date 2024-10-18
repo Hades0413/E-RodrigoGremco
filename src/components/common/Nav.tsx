@@ -60,6 +60,9 @@ const Nav = () => {
             <Link to="/producto">Producto</Link>
           </li>
           <li>
+            <Link to="/usuarios">usuarios</Link>
+          </li>
+          <li>
             <Link to="/categoria">Categoría</Link>
           </li>
           <li>
