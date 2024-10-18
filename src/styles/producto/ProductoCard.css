@@ -1,4 +1,4 @@
-.image-container {
+.image-container-game {
   height: 194px; /* Altura fija para el contenedor de la imagen */
   width: 100%; /* Ancho completo */
   overflow: hidden; /* Oculta cualquier parte de la imagen que sobrepase el contenedor */

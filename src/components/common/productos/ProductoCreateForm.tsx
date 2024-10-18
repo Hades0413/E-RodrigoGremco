@@ -4,6 +4,7 @@ import { createProducto, fetchNextProductId, Producto } from "../../../services/
 import FileDescription from "../../icons/Inventory";
 import { Gamepad, DollarSign, Package, Image } from 'lucide-react';
 import Category from "../../icons/Category";
+import "../../../styles/producto/ProductoCreateForm.css";
 
 interface ProductoCreateFormProps {
   onClose: () => void;
@@ -176,177 +177,10 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose }) => {
 
           <div className="button-group">
             <button type="submit" className="submit-btn">Crear Producto</button>
-            <button type="button" className="cancel-btn" onClick={onClose}>Cancelar</button>
+            <button type="button" className="cancel-btn-producto" onClick={onClose}>Cancelar</button>
           </div>
         </form>
       </div>
-      <style>{`
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.7);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-
-        .modal-content {
-          background: linear-gradient(145deg, #2e1e4f 0%, #4a2a7a 100%);
-          border-radius: 20px;
-          padding: 2rem;
-          color: #e0b0ff;
-          width: 90%;
-          max-width: 600px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-title {
-          font-size: 2rem;
-          text-align: center;
-          margin-bottom: 2rem;
-          color: #fff;
-          text-shadow: 0 0 10px #9932CC, 0 0 20px #9932CC;
-          letter-spacing: 2px;
-        }
-
-        .producto-form {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-        }
-
-        .form-row {
-          display: flex;
-          gap: 1rem;
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .half-width {
-          flex: 1;
-        }
-
-        label {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-size: 1.1rem;
-          color: #c0a0e0;
-          transition: color 0.3s ease;
-        }
-
-        label:hover {
-          color: #e0b0ff;
-        }
-
-        .icon {
-          width: 24px;
-          height: 24px;
-        }
-
-        input, textarea {
-          background-color: rgba(255, 255, 255, 0.1);
-          border: 2px solid #9932CC;
-          border-radius: 12px;
-          padding: 0.75rem 1rem;
-          color: #fff;
-          font-size: 1rem;
-          transition: all 0.3s ease;
-        }
-
-        input:focus, textarea:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(153, 50, 204, 0.5);
-          background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        input::placeholder, textarea::placeholder {
-          color: #a080c0;
-        }
-
-        textarea {
-          resize: vertical;
-          min-height: 100px;
-        }
-
-        .image-preview {
-          max-width: 100%;
-          height: auto;
-          border-radius: 12px;
-          margin-top: 1rem;
-        }
-
-        .button-group {
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-        }
-
-        .submit-btn, .cancel-btn {
-          flex: 1;
-          padding: 1rem;
-          font-size: 1.1rem;
-          font-weight: bold;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: none;
-          border-radius: 12px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .submit-btn {
-          background-color: #9932CC;
-          color: #fff;
-        }
-
-        .submit-btn:hover {
-          background-color: #8B008B;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(153, 50, 204, 0.4);
-        }
-
-        .cancel-btn {
-          background-color: #4a2a7a;
-          color: #e0b0ff;
-        }
-
-        .cancel-btn:hover {
-          background-color: #3a1a6a;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(74, 42, 122, 0.4);
-        }
-
-        @media (max-width: 600px) {
-          .modal-content {
-            padding: 1.5rem;
-          }
-
-          .modal-title {
-            font-size: 1rem;
-          }
-
-          label {
-            font-size: 0.8rem;
-          }
-
-          input, textarea, .submit-btn, .cancel-btn {
-            font-size: 0.7rem;
-          }
-
-          .form-row {
-            flex-direction: column;
-          }
-        }
-      `}</style>
     </div>
   );
 };

@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  CircularProgress,
-  Snackbar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
 import Swal from "sweetalert2";
 import { fetchUsuarios, deleteUsuario } from "../services/usuarioService";
 import type { Usuario } from "../services/usuarioService";
 import UsuarioDetailsForm from "../components/common/usuarios/UsuarioDetailsForm";
 import UsuarioEditForm from "../components/common/usuarios/UsuarioEditForm";
 import UsuarioCreateForm from "../components/common/usuarios/UsuarioCreateForm";
+import "../styles/users/Users.css"
+import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import "../styles/users/Users.css";
 
 const Users: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(
-    null
-  );
+  const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const loadUsuarios = async () => {
@@ -40,6 +27,7 @@ const Users: React.FC = () => {
         const usuariosData = await fetchUsuarios();
         const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
         setUsuarios(sortedUsuarios);
+        setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
       } catch (error) {
         setError("Error al cargar los usuarios.");
       } finally {
@@ -66,9 +54,11 @@ const Users: React.FC = () => {
       setLoading(true);
       try {
         await deleteUsuario(firebaseDocId);
-        setUsuarios((prev) =>
-          prev.filter((usuario) => usuario.firebaseDocId !== firebaseDocId)
-        );
+        setUsuarios((prev) => {
+          const updatedUsuarios = prev.filter((usuario) => usuario.firebaseDocId !== firebaseDocId);
+          setTotalPages(Math.ceil(updatedUsuarios.length / itemsPerPage));
+          return updatedUsuarios;
+        });
         Swal.fire(
           "¡Eliminado!",
           `El usuario "${nombre}" fue eliminado correctamente.`,
@@ -110,164 +100,172 @@ const Users: React.FC = () => {
     setSelectedUsuarioId(null);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const paginatedUsuarios = usuarios.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, padding: 2 }}>
-      <h1>Gestión de Usuarios</h1>
+    <div className="categoria-container">
+      <h1 className="page-title">Gestión de Usuarios</h1>
 
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleOpenCreate}
-        sx={{ marginBottom: 2 }}
-      >
-        Crear Usuario
-      </Button>
+      <button className="create-btn" onClick={handleOpenCreate}>
+        <Plus className="icon" /> Crear Usuario
+      </button>
 
-      <TableContainer component={Paper} sx={{ marginTop: 2 }}>
-        <Table aria-label="tabla de usuarios">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Correo</TableCell>
-              <TableCell>Dirección</TableCell>
-              <TableCell>Es Admin</TableCell>
-              <TableCell>Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      <div className="table-container-user">
+        <table className="categoria-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Dirección</th>
+              <th>Es Admin</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} align="center">
-                  <CircularProgress />
-                </TableCell>
-              </TableRow>
-            ) : usuarios.length > 0 ? (
-              usuarios.map((usuario) => (
-                <TableRow key={usuario.firebaseDocId}>
-                  <TableCell>{usuario.id}</TableCell>
-                  <TableCell>{usuario.nombre}</TableCell>
-                  <TableCell>{usuario.correo_electronico}</TableCell>
-                  <TableCell>{usuario.direccion_envio}</TableCell>
-                  <TableCell>{usuario.es_admin ? "Sí" : "No"}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleOpenDetails(usuario.firebaseDocId!)}
-                    >
-                      Detalles
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleOpenEdit(usuario.firebaseDocId!)}
-                      sx={{ marginLeft: 1 }}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() =>
-                        handleDeleteClick(
-                          usuario.firebaseDocId!,
-                          usuario.nombre
-                        )
-                      }
-                      sx={{ marginLeft: 1 }}
-                    >
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
+              <tr>
+                <td colSpan={6} className="loading">
+                  <div className="spinner"></div>
+                </td>
+              </tr>
+            ) : paginatedUsuarios.length > 0 ? (
+              paginatedUsuarios.map((usuario) => (
+                <tr key={usuario.firebaseDocId}>
+                  <td>{usuario.id}</td>
+                  <td>{usuario.nombre}</td>
+                  <td>{usuario.correo_electronico}</td>
+                  <td>{usuario.direccion_envio}</td>
+                  <td>{usuario.es_admin ? "Sí" : "No"}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button className="action-btn info" onClick={() => handleOpenDetails(usuario.firebaseDocId!)}>
+                        <Info className="icon" />
+                      </button>
+                      <button className="action-btn edit" onClick={() => handleOpenEdit(usuario.firebaseDocId!)}>
+                        <Edit className="icon" />
+                      </button>
+                      <button className="action-btn delete" onClick={() => handleDeleteClick(usuario.firebaseDocId!, usuario.nombre)}>
+                        <Trash2 className="icon" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={6} align="center">
-                  No hay usuarios disponibles.
-                </TableCell>
-              </TableRow>
+              <tr>
+                <td colSpan={6} className="no-categorias">No hay usuarios disponibles.</td>
+              </tr>
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
 
-      <Snackbar
-        open={!!error}
-        autoHideDuration={6000}
-        onClose={() => setError(null)}
-        message={error}
-      />
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="pagination-btn"
+          >
+            <ChevronLeft className="icon" />
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="pagination-btn"
+          >
+            <ChevronRight className="icon" />
+          </button>
+        </div>
+      )}
 
-      <Dialog open={isDetailsModalOpen} onClose={handleCloseDetails}>
-        <DialogTitle>Detalles del Usuario</DialogTitle>
-        <DialogContent>
-          {selectedUsuarioId && (
-            <UsuarioDetailsForm firebaseDocId={selectedUsuarioId} />
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDetails} color="primary">
-            Cerrar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={() => setError(null)}>Cerrar</button>
+        </div>
+      )}
 
-      <Dialog open={isEditModalOpen} onClose={handleCloseEdit}>
-        <DialogTitle>Editar Usuario</DialogTitle>
-        <DialogContent>
-          {selectedUsuarioId && (
-            <UsuarioEditForm
-              firebaseDocId={selectedUsuarioId}
-              onUsuarioUpdated={() => {
-                handleCloseEdit();
+      {isDetailsModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-title">Detalles del Usuario</h2>
+            {selectedUsuarioId && (
+              <UsuarioDetailsForm firebaseDocId={selectedUsuarioId} />
+            )}
+            <button className="cancel-btn" onClick={handleCloseDetails}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {isEditModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-title">Editar Usuario</h2>
+            {selectedUsuarioId && (
+              <UsuarioEditForm
+                firebaseDocId={selectedUsuarioId}
+                onUsuarioUpdated={() => {
+                  handleCloseEdit();
+                  setLoading(true);
+                  fetchUsuarios()
+                    .then((usuariosData) => {
+                      const sortedUsuarios = usuariosData.sort(
+                        (a, b) => a.id - b.id
+                      );
+                      setUsuarios(sortedUsuarios);
+                      setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
+                    })
+                    .catch(() => setError("Error al cargar los usuarios"))
+                    .finally(() => setLoading(false));
+                }}
+              />
+            )}
+            <button className="cancel-btn" onClick={handleCloseEdit}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {isCreateModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-title">Crear Usuario</h2>
+            <UsuarioCreateForm 
+              onUsuarioCreated={() => {
+                handleCloseCreate();
                 setLoading(true);
                 fetchUsuarios()
                   .then((usuariosData) => {
-                    const sortedUsuarios = usuariosData.sort(
-                      (a, b) => a.id - b.id
-                    );
+                    const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
                     setUsuarios(sortedUsuarios);
+                    setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
                   })
                   .catch(() => setError("Error al cargar los usuarios"))
                   .finally(() => setLoading(false));
-              }}
+              }} 
             />
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEdit} color="primary">
-            Cerrar
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={isCreateModalOpen} onClose={handleCloseCreate}>
-  <DialogTitle>Crear Usuario</DialogTitle>
-  <DialogContent>
-    <UsuarioCreateForm 
-      onUsuarioCreated={() => {
-        handleCloseCreate();
-        setLoading(true);
-        fetchUsuarios()
-          .then((usuariosData) => {
-            const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
-            setUsuarios(sortedUsuarios);
-          })
-          .catch(() => setError("Error al cargar los usuarios"))
-          .finally(() => setLoading(false));
-      }} 
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseCreate} color="primary">
-      Cerrar
-    </Button>
-  </DialogActions>
-</Dialog>
-
-    </Box>
+            <button className="cancel-btn" onClick={handleCloseCreate}>Cerrar</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

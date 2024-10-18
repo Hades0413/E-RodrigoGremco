@@ -83,6 +83,10 @@ export default function LoginForm() {
     }
   };
 
+  const handleRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <div
       style={{
@@ -126,6 +130,7 @@ export default function LoginForm() {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
+              color:"#000"
             }}
           />
           <input
@@ -140,6 +145,7 @@ export default function LoginForm() {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
+              color:"#000"
             }}
           />
           <button
@@ -219,6 +225,7 @@ export default function LoginForm() {
           </button>
         </div>
         <button
+          onClick={handleRegister} // Agrega el manejador de eventos aquí
           style={{
             width: "100%",
             textAlign: "center",
@@ -228,7 +235,7 @@ export default function LoginForm() {
             cursor: "pointer",
           }}
         >
-          ¿Olvidaste tu contraseña?
+          No tienes una cuenta? Registrate!
         </button>
       </div>
     </div>
