@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import "@sweetalert2/theme-dark/dark.css";
+import GithubIcon from "../components/icons/GithubIcon";
+import GoogleIcon from "../components/icons/GoogleIcon";
 import { loginWithEmail, loginWithGoogle, loginWithGitHub } from "../services/authService";
-import { Container, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const Login: React.FC = () => {
-  const [correoElectronico, setCorreoElectronico] = useState("");
-  const [contrasena, setContrasena] = useState("");
+export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await loginWithEmail(correoElectronico, contrasena);
+      await loginWithEmail(email, password);
       Swal.fire({
         title: "Éxito",
         text: "Inicio de sesión exitoso",
@@ -83,52 +84,153 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Iniciar Sesión
-      </Typography>
-      <form onSubmit={handleLogin}>
-        <TextField
-          label="Correo Electrónico"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={correoElectronico}
-          onChange={(e) => setCorreoElectronico(e.target.value)}
-          required
-        />
-        <TextField
-          label="Contraseña"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-          required
-        />
-        <Button type="submit" variant="contained" color="primary">
-          Iniciar Sesión
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleGoogleLogin}
-          style={{ marginLeft: "10px" }}
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(to right, #8b5cf6, #7c3aed)",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          backgroundColor: "white",
+          borderRadius: "8px",
+          padding: "24px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "24px",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "24px",
+          }}
         >
-          Iniciar Sesión con Google
-        </Button>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleGitHubLogin}
-          style={{ marginLeft: "10px" }}
+          Bienvenido de vuelta
+        </h2>
+        <form onSubmit={handleLogin} style={{ marginBottom: "24px" }}>
+          <input
+            type="email"
+            placeholder="tu@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              marginBottom: "12px",
+              border: "1px solid #d1d5db",
+              borderRadius: "4px",
+            }}
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              marginBottom: "12px",
+              border: "1px solid #d1d5db",
+              borderRadius: "4px",
+            }}
+          />
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              backgroundColor: "#4f46e5",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Iniciar sesión
+          </button>
+        </form>
+        <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          <span
+            style={{
+              display: "inline-block",
+              padding: "0 8px",
+              backgroundColor: "white",
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
+            O CONTINÚA CON
+          </span>
+          <hr
+            style={{
+              margin: "-9px 0 16px",
+              border: "none",
+              borderTop: "1px solid #e5e7eb",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "16px",
+            marginBottom: "16px",
+          }}
         >
-          Iniciar Sesión con GitHub
-        </Button>
-      </form>
-    </Container>
+          <button
+            onClick={handleGitHubLogin}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "8px",
+              border: "1px solid #d1d5db",
+              borderRadius: "4px",
+              backgroundColor: "white",
+              cursor: "pointer",
+            }}
+          >
+            <GithubIcon style={{ marginRight: "8px", height: "16px", width: "16px" }} />
+            Github
+          </button>
+          <button
+            onClick={handleGoogleLogin}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "8px",
+              border: "1px solid #d1d5db",
+              borderRadius: "4px",
+              backgroundColor: "white",
+              cursor: "pointer",
+            }}
+          >
+            <GoogleIcon style={{ marginRight: "8px", height: "16px", width: "16px" }} />
+            Google
+          </button>
+        </div>
+        <button
+          style={{
+            width: "100%",
+            textAlign: "center",
+            color: "#4f46e5",
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          ¿Olvidaste tu contraseña?
+        </button>
+      </div>
+    </div>
   );
-};
-
-export default Login;
+}

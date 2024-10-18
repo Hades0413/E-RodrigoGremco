@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import "../../styles/common/Nav.css";
-import logo from "../../assets/img/logo.png";
+import mascota from "../../assets/img/mascota.png";
 import { logout } from "../../services/authService";
 
 const Nav = () => {
@@ -47,21 +46,21 @@ const Nav = () => {
       </label>
 
       <Link to="/" className="nav-logo-container">
-        <img src={logo} alt="Logo" className="nav-logo" />
-        <span className="nav-logo-text">PLUTÓN</span>
+        <img src={mascota} alt="Logo" className="nav-logo" />
+        <span className="nav-logo-text">RODRIGO GREMCO</span>
       </Link>
 
       <div className="nav-right">
-        <img src={logo} alt="Logo" className="nav-logo-responsive" />
+        <img src={mascota} alt="Logo" className="nav-logo-responsive" />
         <ul className="nav-links">
           <li>
             <Link to="/home">Home</Link>
           </li>
           <li>
-            <Link to="/producto">producto</Link>
+            <Link to="/producto">Producto</Link>
           </li>
           <li>
-            <Link to="/categoria">categoria</Link>
+            <Link to="/categoria">Categoría</Link>
           </li>
           <li>
             <Link to="/preguntas">Preguntas</Link>

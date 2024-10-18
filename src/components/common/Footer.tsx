@@ -1,5 +1,5 @@
 import "../../styles/common/Footer.css";
-import logo from "../../assets/img/logo.png";
+import mascota from "../../assets/img/mascota.png";
 import FacebookIcon from "../icons/FacebookIcon";
 import InstagramIcon from "../icons/InstagramIcon";
 import GithubIcon from "../icons/GithubIcon";
@@ -15,12 +15,9 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-row">
           <div className="footer-col" id="footer-company">
-            <img src={logo} alt="Logo" className="footer-logo" />
+            <img src={mascota} alt="Logo" className="footer-logo" />
             <p>
-              En Plutón, ofrecemos soluciones digitales personalizadas que
-              impulsan el crecimiento de tu negocio. Nuestro objetivo es
-              transformar tu visión en realidad a través de tecnología
-              innovadora.
+              En Rodrigo Gremco, ofrecemos los mejores videojuegos a descuentos únicos precio veneco.
             </p>
             <div className="footer-social">
               <a

@@ -3,6 +3,7 @@ import { useLoading } from "../context/LoadingContext";
 import Loader from "../components/ui/Loader";
 import "../styles/Style.css";
 import ProductoListar from "../components/common/productos/ProductoListar";
+import BannerCarrousel from "../components/common/BannerCarrousel";
 
 const Home: React.FC = () => {
   const { loading, setLoading } = useLoading();
@@ -23,7 +24,8 @@ const Home: React.FC = () => {
         <Loader />
       ) : (
         <div>
-          <h1>yara causa</h1>
+          {/* <h1>yara causa</h1> */}
+          <BannerCarrousel/>
           <ProductoListar />
         </div>
       )}
