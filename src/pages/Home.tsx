@@ -3,7 +3,7 @@ import { useLoading } from "../context/LoadingContext";
 import Loader from "../components/ui/Loader";
 import "../styles/Style.css";
 import ProductoListar from "../components/common/productos/ProductoListar";
-import BannerCarrousel from "../components/common/BannerCarrousel";
+import BannerCarrousel from "../components/common/Banner";
 
 const Home: React.FC = () => {
   const { loading, setLoading } = useLoading();

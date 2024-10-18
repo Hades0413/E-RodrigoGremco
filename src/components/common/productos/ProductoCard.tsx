@@ -56,7 +56,7 @@ const ProductoCard: React.FC<ProductCardProps> = ({
         },
       }}
     >
-      <Box className="image-container" sx={{ position: "relative" }}>
+      <Box className=".image-container-game" sx={{ position: "relative" }}>
         <CardMedia
           component="img"
           className="product-image"

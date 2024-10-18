@@ -1,5 +1,6 @@
+'use client'
+
 import React, { useState } from "react";
-import { Button, TextField, Box } from "@mui/material";
 import Swal from "sweetalert2";
 import {
   createUsuario,
@@ -7,6 +8,7 @@ import {
   formatFechaRegistro,
 } from "../../../services/usuarioService";
 import { Usuario } from "../../../services/usuarioService";
+import "../../../styles/users/UsuarioCreateForm.css";
 
 interface UsuarioCreateFormProps {
   onUsuarioCreated: () => void;
@@ -62,56 +64,70 @@ const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, padding: 2 }}
-    >
-      <h1>Crear Usuario</h1>
-      <TextField
-        name="nombre"
-        label="Nombre Completo"
-        variant="outlined"
-        required
-        value={nuevoUsuario.nombre}
-        onChange={handleInputChange}
-      />
-      <TextField
-        name="correo_electronico"
-        label="Correo Electrónico"
-        variant="outlined"
-        required
-        value={nuevoUsuario.correo_electronico}
-        onChange={handleInputChange}
-      />
-      <TextField
-        name="contrasena"
-        label="Contraseña"
-        variant="outlined"
-        required
-        value={nuevoUsuario.contrasena}
-        onChange={handleInputChange}
-      />
-      <TextField
-        name="direccion_envio"
-        label="Dirección de Envío"
-        variant="outlined"
-        value={nuevoUsuario.direccion_envio}
-        onChange={handleInputChange}
-      />
-      <label>
+    <form onSubmit={handleSubmit} className="usuario-form">
+   
+      <div className="form-group">
+        <label htmlFor="nombre">Nombre Completo</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          required
+          value={nuevoUsuario.nombre}
+          onChange={handleInputChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="correo_electronico">Correo Electrónico</label>
+        <input
+          type="email"
+          id="correo_electronico"
+          name="correo_electronico"
+          required
+          value={nuevoUsuario.correo_electronico}
+          onChange={handleInputChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="contrasena">Contraseña</label>
+        <input
+          type="password"
+          id="contrasena"
+          name="contrasena"
+          required
+          value={nuevoUsuario.contrasena}
+          onChange={handleInputChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="direccion_envio">Dirección de Envío</label>
+        <input
+          type="text"
+          id="direccion_envio"
+          name="direccion_envio"
+          value={nuevoUsuario.direccion_envio}
+          onChange={handleInputChange}
+          className="form-input"
+        />
+      </div>
+      <div className="form-group-admin checkbox-group">
         <input
           type="checkbox"
+          id="es_admin"
           name="es_admin"
           checked={nuevoUsuario.es_admin}
           onChange={handleInputChange}
+          className="form-checkbox"
         />
-        Administrador
-      </label>
-      <Button type="submit" variant="contained" color="primary">
+        <label htmlFor="es_admin">Administrador</label>
+      </div>
+      <button type="submit" className="submit-btn">
         Crear Usuario
-      </Button>
-    </Box>
+      </button>
+    </form>
   );
 };
 

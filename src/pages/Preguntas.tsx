@@ -158,7 +158,7 @@ const Preguntas: React.FC = () => {
 
         <Box sx={{ mt: 4 }}>
           <Typography variant="h5" gutterBottom>
-            Nuestra ubicación
+            Nuestra ubicación, abrimos a las 3:30PM, esto empezó un lunes 09/07/2023
           </Typography>
           <Box
             sx={{
@@ -175,7 +175,7 @@ const Preguntas: React.FC = () => {
   width="100%"
   height="100%"
   style={{ borderRadius: '8px' }}
-  src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d3903.812583977866!2d-77.05410276952496!3d-11.91812756798125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x9105d04d91764a35%3A0x585f303a906d17c4!2sLYCAN%20GAMES%20SHOP%2C%20Altura%20Parque%20Zonal%20Sinchi%20Rica%2C%20Lima%2007%2C%20Comas%20LIMA%2007!3m2!1d-11.9196346!2d-77.0526312!5e0!3m2!1ses-419!2spe!4v1729012891227!5m2!1ses-419!2spe"
+  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3902.784661107314!2d-77.063773!3d-11.989397000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDU5JzIxLjgiUyA3N8KwMDMnNDkuNiJX!5e0!3m2!1ses-419!2spe!4v1729227052449!5m2!1ses-419!2spe"
   allowFullScreen
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"

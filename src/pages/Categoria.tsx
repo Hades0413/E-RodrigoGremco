@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { fetchCategorias, deleteCategoria, createCategoria, fetchLastCategoryId } from "../services/categoriaService";
 import CategoriaForm from "../components/common/categorias/CategoriaForm";
-import { Info, Edit, Trash2, Plus } from 'lucide-react';
+import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import "../styles/categoria/Categoria.css";
 
 interface CategoriaType {
   firebaseId: string;
@@ -18,12 +19,16 @@ export default function CategoriaTable() {
   const [isCreating, setIsCreating] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
         const categoriasList = await fetchCategorias();
         setCategorias(categoriasList);
+        setTotalPages(Math.ceil(categoriasList.length / itemsPerPage));
       } catch (error) {
         setError("Error al obtener las categorías.");
       } finally {
@@ -69,7 +74,11 @@ export default function CategoriaTable() {
       setLoading(true);
       try {
         await deleteCategoria(firebaseId);
-        setCategorias((prev) => prev.filter((c) => c.id !== id));
+        setCategorias((prev) => {
+          const updatedCategorias = prev.filter((c) => c.id !== id);
+          setTotalPages(Math.ceil(updatedCategorias.length / itemsPerPage));
+          return updatedCategorias;
+        });
         Swal.fire({
           title: "¡Eliminado!",
           text: `La categoría "${nombre}" fue eliminada correctamente.`,
@@ -96,6 +105,7 @@ export default function CategoriaTable() {
       await createCategoria(nombre, lastId);
       const newCategorias = await fetchCategorias();
       setCategorias(newCategorias);
+      setTotalPages(Math.ceil(newCategorias.length / itemsPerPage));
       Swal.fire({
         icon: "success",
         title: "Categoría creada",
@@ -107,13 +117,22 @@ export default function CategoriaTable() {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const paginatedCategorias = categorias.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="categoria-container">
       <h1 className="page-title">Gestión de Categorías</h1>
       <button className="create-btn" onClick={handleCreateClick}>
         <Plus className="icon" /> Crear Categoría
       </button>
-      <div className="table-container">
+      <div className="table-container-categoria">
         <table className="categoria-table">
           <thead>
             <tr>
@@ -129,8 +148,8 @@ export default function CategoriaTable() {
                   <div className="spinner"></div>
                 </td>
               </tr>
-            ) : categorias.length > 0 ? (
-              categorias.map((categoria) => (
+            ) : paginatedCategorias.length > 0 ? (
+              paginatedCategorias.map((categoria) => (
                 <tr key={categoria.id}>
                   <td>{categoria.id}</td>
                   <td>{categoria.nombre}</td>
@@ -157,6 +176,33 @@ export default function CategoriaTable() {
           </tbody>
         </table>
       </div>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="pagination-btn"
+          >
+            <ChevronLeft className="icon" />
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="pagination-btn"
+          >
+            <ChevronRight className="icon" />
+          </button>
+        </div>
+      )}
       {modalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -170,7 +216,7 @@ export default function CategoriaTable() {
               isCreating={isCreating}
               isViewing={isViewing}
             />
-            <button className="cancel-btn" onClick={handleCloseModal}>Cancelar</button>
+            <button className="cancel-btn-categoria" onClick={handleCloseModal}>Cancelar</button>
           </div>
         </div>
       )}
@@ -180,235 +226,6 @@ export default function CategoriaTable() {
           <button onClick={() => setError(null)}>Cerrar</button>
         </div>
       )}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
-
-        .categoria-container {
-          background: linear-gradient(145deg, #2e1e4f 0%, #4a2a7a 100%);
-          min-height: 100vh;
-          color: #e0b0ff;
-          padding: 2rem;
-        }
-
-        .page-title {
-          font-family: 'Orbitron', sans-serif;
-          font-size: 2.5rem;
-          text-align: center;
-          margin-bottom: 2rem;
-          color: #fff;
-          text-shadow: 0 0 10px #9932CC, 0 0 20px #9932CC;
-          letter-spacing: 2px;
-        }
-
-        .create-btn {
-          background-color: #9932CC;
-          color: #fff;
-          border: none;
-          padding: 0.75rem 1.5rem;
-          font-size: 1rem;
-          font-weight: bold;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          margin-bottom: 1rem;
-        }
-
-        .create-btn:hover {
-          background-color: #8B008B;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(153, 50, 204, 0.4);
-        }
-
-        .table-container {
-          background-color: rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .categoria-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        .categoria-table th,
-        .categoria-table td {
-          padding: 1rem;
-          text-align: left;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .categoria-table th {
-          background-color: rgba(153, 50, 204, 0.2);
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .categoria-table tr:hover {
-          background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .action-buttons {
-          display: flex;
-          gap: 0.5rem;
-        }
-
-        .action-btn {
-          background-color: transparent;
-          border: none;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          padding: 0.5rem;
-          border-radius: 8px;
-        }
-
-        .action-btn:hover {
-          transform: translateY(-2px);
-        }
-
-        .action-btn.info {
-          color: #3498db;
-        }
-
-        .action-btn.edit {
-          color: #f39c12;
-        }
-
-        .action-btn.delete {
-          color: #e74c3c;
-        }
-
-        .icon {
-          width: 20px;
-          height: 20px;
-        }
-
-        .loading {
-          text-align: center;
-        }
-
-        .spinner {
-          border: 4px solid rgba(255, 255, 255, 0.3);
-          border-radius: 50%;
-          border-top: 4px solid #9932CC;
-          width: 40px;
-          height: 40px;
-          animation: spin 1s linear infinite;
-          margin: 20px auto;
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
-        .no-categorias {
-          text-align: center;
-          font-style: italic;
-          color: rgba(255, 255, 255, 0.6);
-        }
-
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.7);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
-
-        .modal-content {
-          background: linear-gradient(145deg, #2e1e4f 0%, #4a2a7a 100%);
-          border-radius: 20px;
-          padding: 2rem;
-          color: #e0b0ff;
-          width: 90%;
-          max-width: 600px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-title {
-          font-family: 'Orbitron', sans-serif;
-          font-size: 2rem;
-          text-align: center;
-          margin-bottom: 2rem;
-          color: #fff;
-          text-shadow: 0 0 10px #9932CC, 0 0 20px #9932CC;
-          letter-spacing: 2px;
-        }
-
-        .cancel-btn {
-          background-color: #4a2a7a;
-          color: #e0b0ff;
-          border: none;
-          padding: 1rem;
-          font-size: 1rem;
-          font-weight: bold;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .cancel-btn:hover {
-          background-color: #3a1a6a;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(74, 42, 122, 0.4);
-        }
-
-        .error-message {
-          background-color: rgba(231, 76, 60, 0.2);
-          color: #e74c3c;
-          padding: 1rem;
-          border-radius: 12px;
-          margin-top: 1rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .error-message button {
-          background-color: #e74c3c;
-          color: #fff;
-          border: none;
-          padding: 0.5rem 1rem;
-          font-size: 0.9rem;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .error-message button:hover {
-          background-color: #c0392b;
-        }
-
-        @media (max-width: 768px) {
-          .categoria-container {
-            padding: 1rem;
-          }
-
-          .page-title {
-            font-size: 2rem;
-          }
-
-          .categoria-table th,
-          .categoria-table td {
-            padding: 0.75rem 0.5rem;
-          }
-
-          .action-buttons {
-            flex-direction: column;
-            gap: 0.25rem;
-          }
-        }
-      `}</style>
     </div>
   );
 }

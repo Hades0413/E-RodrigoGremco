@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Usuario, fetchUsuarioByFirebaseDocId, updateUsuario } from "../../../services/usuarioService";
+import Swal from "sweetalert2";
 
 interface UsuarioEditFormProps {
   firebaseDocId: string;
@@ -34,50 +35,75 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateUsuario(firebaseDocId, usuario);
-    onUsuarioUpdated();
+    try {
+      await updateUsuario(firebaseDocId, usuario);
+      Swal.fire({
+        icon: "success",
+        title: "Usuario actualizado",
+        text: "Los cambios se han guardado correctamente.",
+        confirmButtonText: "Aceptar",
+      });
+      onUsuarioUpdated();
+    } catch (error) {
+      console.error("Error al actualizar el usuario:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Hubo un problema al actualizar el usuario.",
+        confirmButtonText: "Aceptar",
+      });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Editar Usuario</h2>
-      <div>
-        <label>Nombre:</label>
+    <form onSubmit={handleSubmit} className="usuario-form">
+      <div className="form-group">
+        <label htmlFor="nombre">Nombre:</label>
         <input
           type="text"
+          id="nombre"
           name="nombre"
           value={usuario.nombre}
           onChange={handleInputChange}
+          className="form-input"
         />
       </div>
-      <div>
-        <label>Correo Electrónico:</label>
+      <div className="form-group">
+        <label htmlFor="correo_electronico">Correo Electrónico:</label>
         <input
           type="email"
+          id="correo_electronico"
           name="correo_electronico"
           value={usuario.correo_electronico}
           onChange={handleInputChange}
+          className="form-input"
         />
       </div>
-      <div>
-        <label>Dirección de Envío:</label>
+      <div className="form-group">
+        <label htmlFor="direccion_envio">Dirección de Envío:</label>
         <input
           type="text"
+          id="direccion_envio"
           name="direccion_envio"
           value={usuario.direccion_envio}
           onChange={handleInputChange}
+          className="form-input"
         />
       </div>
-      <div>
-        <label>Administrador:</label>
+      <div className="form-group-admin checkbox-group">
         <input
           type="checkbox"
+          id="es_admin"
           name="es_admin"
           checked={usuario.es_admin}
           onChange={handleInputChange}
+          className="form-checkbox"
         />
+        <label htmlFor="es_admin">Administrador</label>
       </div>
-      <button type="submit">Guardar Cambios</button>
+      <button type="submit" className="submit-btn">
+        Guardar Cambios
+      </button>
     </form>
   );
 };
