@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 interface UsuarioEditFormProps {
   firebaseDocId: string;
-  onUsuarioUpdated: () => void;
+  onUsuarioUpdated: (updatedUsuario: Usuario) => void; // Mantener el tipo Usuario completo
 }
 
 const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsuarioUpdated }) => {
@@ -37,13 +37,24 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
     e.preventDefault();
     try {
       await updateUsuario(firebaseDocId, usuario);
+      const updatedUsuario: Usuario = {
+        id: usuario.id ?? 0, // Proveer un valor por defecto o el valor correcto
+        nombre: usuario.nombre ?? "",
+        correo_electronico: usuario.correo_electronico ?? "",
+        direccion_envio: usuario.direccion_envio ?? "",
+        es_admin: usuario.es_admin ?? false,
+        contrasena: "", // No se debe actualizar la contraseña aquí
+        fecha_registro: "", // Asumir que esta propiedad no cambia
+        firebaseDocId, // Incluir el firebaseDocId
+      };
+      
       Swal.fire({
         icon: "success",
         title: "Usuario actualizado",
         text: "Los cambios se han guardado correctamente.",
         confirmButtonText: "Aceptar",
       });
-      onUsuarioUpdated();
+      onUsuarioUpdated(updatedUsuario); // Llamar con el usuario actualizado
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
       Swal.fire({
@@ -63,7 +74,7 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
           type="text"
           id="nombre"
           name="nombre"
-          value={usuario.nombre}
+          value={usuario.nombre || ""}
           onChange={handleInputChange}
           className="form-input"
         />
@@ -74,7 +85,7 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
           type="email"
           id="correo_electronico"
           name="correo_electronico"
-          value={usuario.correo_electronico}
+          value={usuario.correo_electronico || ""}
           onChange={handleInputChange}
           className="form-input"
         />
@@ -85,7 +96,7 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
           type="text"
           id="direccion_envio"
           name="direccion_envio"
-          value={usuario.direccion_envio}
+          value={usuario.direccion_envio || ""}
           onChange={handleInputChange}
           className="form-input"
         />
@@ -95,7 +106,7 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
           type="checkbox"
           id="es_admin"
           name="es_admin"
-          checked={usuario.es_admin}
+          checked={usuario.es_admin || false}
           onChange={handleInputChange}
           className="form-checkbox"
         />

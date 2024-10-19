@@ -5,13 +5,22 @@ import type { Producto } from "../services/productoService";
 import ProductoDetailsForm from "../components/common/productos/ProductoDetailsForm";
 import ProductoEditForm from "../components/common/productos/ProductoEditForm";
 import ProductoCreateForm from "../components/common/productos/ProductoCreateForm";
-import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  Info,
+  Edit,
+  Trash2,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import "../styles/producto/Producto.css";
 
-const ProductoTable: React.FC = () => {
+const Producto: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(null);
+  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(
+    null
+  );
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -24,8 +33,9 @@ const ProductoTable: React.FC = () => {
     const loadProductos = async () => {
       try {
         const productosData = await fetchProductos();
-        setProductos(productosData);
-        setTotalPages(Math.ceil(productosData.length / itemsPerPage));
+        const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
+        setProductos(productosOrdenados);
+        setTotalPages(Math.ceil(productosOrdenados.length / itemsPerPage));
       } catch (error) {
         setError("Error al cargar los productos.");
       } finally {
@@ -45,15 +55,25 @@ const ProductoTable: React.FC = () => {
     setEditModalOpen(true);
   };
 
+  const handleProductoUpdated = (updatedProducto: Producto) => {
+    setProductos((prevProductos) =>
+      prevProductos.map((producto) =>
+        producto.firebaseDocId === updatedProducto.firebaseDocId
+          ? updatedProducto
+          : producto
+      )
+    );
+  };
+
   const handleDetailsClick = (producto: Producto) => {
     setSelectedProducto(producto);
     setModalOpen(true);
   };
 
-  const handleDeleteClick = async (id: number, nombre: string) => {
+  const handleDeleteClick = async (producto: Producto) => {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
-      text: `¿Quieres eliminar el producto "${nombre}" con ID ${id}?`,
+      text: `¿Quieres eliminar el producto "${producto.nombre}" con ID ${producto.id}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -65,16 +85,16 @@ const ProductoTable: React.FC = () => {
     if (result.isConfirmed) {
       setLoading(true);
       try {
-        const firebaseDocId = String(id);
-        await deleteProducto(firebaseDocId);
-        setProductos((prev) => {
-          const updatedProductos = prev.filter((producto) => producto.id !== id);
-          setTotalPages(Math.ceil(updatedProductos.length / itemsPerPage));
-          return updatedProductos;
-        });
+        await deleteProducto(producto.firebaseDocId!);
+
+        const productosData = await fetchProductos();
+        const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
+        setProductos(productosOrdenados);
+        setTotalPages(Math.ceil(productosOrdenados.length / itemsPerPage));
+
         Swal.fire({
           title: "¡Eliminado!",
-          text: `El producto "${nombre}" fue eliminado correctamente.`,
+          text: `El producto "${producto.nombre}" fue eliminado correctamente.`,
           icon: "success",
         });
       } catch (error) {
@@ -160,13 +180,22 @@ const ProductoTable: React.FC = () => {
                   </td>
                   <td>
                     <div className="action-buttons">
-                      <button className="action-btn info" onClick={() => handleDetailsClick(producto)}>
+                      <button
+                        className="action-btn info"
+                        onClick={() => handleDetailsClick(producto)}
+                      >
                         <Info className="icon" />
                       </button>
-                      <button className="action-btn edit" onClick={() => handleEditClick(producto)}>
+                      <button
+                        className="action-btn edit"
+                        onClick={() => handleEditClick(producto)}
+                      >
                         <Edit className="icon" />
                       </button>
-                      <button className="action-btn delete" onClick={() => handleDeleteClick(producto.id, producto.nombre)}>
+                      <button
+                        className="action-btn delete"
+                        onClick={() => handleDeleteClick(producto)}
+                      >
                         <Trash2 className="icon" />
                       </button>
                     </div>
@@ -175,7 +204,9 @@ const ProductoTable: React.FC = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="no-products">No hay productos disponibles.</td>
+                <td colSpan={8} className="no-products">
+                  No hay productos disponibles.
+                </td>
               </tr>
             )}
           </tbody>
@@ -195,7 +226,9 @@ const ProductoTable: React.FC = () => {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              className={`pagination-btn ${
+                currentPage === page ? "active" : ""
+              }`}
             >
               {page}
             </button>
@@ -224,8 +257,11 @@ const ProductoTable: React.FC = () => {
             <ProductoEditForm
               producto={selectedProducto}
               onClose={handleCloseEditModal}
+              onProductoUpdated={handleProductoUpdated}
             />
-            <button className="cancel-btn" onClick={handleCloseEditModal}>Cancelar</button>
+            <button className="cancel-btn" onClick={handleCloseEditModal}>
+              Cancelar
+            </button>
           </div>
         </div>
       )}
@@ -234,7 +270,12 @@ const ProductoTable: React.FC = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="modal-title">Crear Producto</h2>
-            <ProductoCreateForm onClose={handleCloseCreateModal} />
+            <ProductoCreateForm
+              onClose={handleCloseCreateModal}
+              onProductoCreated={(newProducto: Producto) => {
+                setProductos((prev) => [...prev, newProducto]);
+              }}
+            />
           </div>
         </div>
       )}
@@ -249,4 +290,4 @@ const ProductoTable: React.FC = () => {
   );
 };
 
-export default ProductoTable;
+export default Producto;

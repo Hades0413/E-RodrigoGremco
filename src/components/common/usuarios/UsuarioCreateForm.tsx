@@ -11,7 +11,7 @@ import { Usuario } from "../../../services/usuarioService";
 import "../../../styles/users/UsuarioCreateForm.css";
 
 interface UsuarioCreateFormProps {
-  onUsuarioCreated: () => void;
+  onUsuarioCreated: (nuevoUsuario: Usuario) => void; // Cambiado para recibir el nuevo usuario
 }
 
 const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
@@ -51,7 +51,7 @@ const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
         text: "El usuario se ha creado correctamente.",
         confirmButtonText: "Aceptar",
       });
-      onUsuarioCreated();
+      onUsuarioCreated(usuarioConId); // Llamar con el nuevo usuario
     } else {
       console.error("Error al crear el usuario.");
       Swal.fire({
@@ -65,7 +65,6 @@ const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="usuario-form">
-   
       <div className="form-group">
         <label htmlFor="nombre">Nombre Completo</label>
         <input
