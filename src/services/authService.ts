@@ -99,9 +99,17 @@ export const loginWithEmail = async (correo: string, contrasena: string) => {
     console.log("Inicio de sesión exitoso:", userData);
     // Retorna el usuario o lo que necesites
     return userData;
-  } catch (error) {
-    console.error("Error al iniciar sesión con correo y contraseña:", error);
-    throw error;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(
+        "Error al iniciar sesión con correo y contraseña:",
+        error.message
+      );
+      throw new Error(error.message);
+    } else {
+      console.error("Error desconocido:", error);
+      throw new Error("Error desconocido al iniciar sesión");
+    }
   }
 };
 
