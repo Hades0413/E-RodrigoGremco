@@ -45,7 +45,7 @@ const Nav = () => {
         </svg>
       </label>
 
-      <Link to="/" className="nav-logo-container">
+      <Link to="/home" className="nav-logo-container">
         <img src={mascota} alt="Logo" className="nav-logo" />
         <span className="nav-logo-text">RODRIGO GREMCO</span>
       </Link>
