@@ -17,6 +17,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "../styles/categoria/Categoria.css";
+import SearchTable from '../components/common/SearchTable';
+import '../styles/common/SearchTable.css';
 
 interface CategoriaType {
   firebaseId: string;
@@ -26,9 +28,9 @@ interface CategoriaType {
 
 export default function CategoriaTable() {
   const [categorias, setCategorias] = useState<CategoriaType[]>([]);
+  const [filteredCategorias, setFilteredCategorias] = useState<CategoriaType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategoria, setSelectedCategoria] =
-    useState<CategoriaType | null>(null);
+  const [selectedCategoria, setSelectedCategoria] = useState<CategoriaType | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
@@ -43,6 +45,7 @@ export default function CategoriaTable() {
         const categoriasList = await fetchCategorias();
         const categoriasOrdenadas = categoriasList.sort((a, b) => a.id - b.id);
         setCategorias(categoriasOrdenadas);
+        setFilteredCategorias(categoriasOrdenadas);
         setTotalPages(Math.ceil(categoriasOrdenadas.length / itemsPerPage));
       } catch (error) {
         setError("Error al obtener las categorías.");
@@ -146,6 +149,7 @@ export default function CategoriaTable() {
       const categoriasList = await fetchCategorias();
       const categoriasOrdenadas = categoriasList.sort((a, b) => a.id - b.id);
       setCategorias(categoriasOrdenadas);
+      setFilteredCategorias(categoriasOrdenadas);
       setTotalPages(Math.ceil(categoriasOrdenadas.length / itemsPerPage));
     } catch (error) {
       setError("Error al obtener las categorías.");
@@ -158,7 +162,13 @@ export default function CategoriaTable() {
     setCurrentPage(newPage);
   };
 
-  const paginatedCategorias = categorias.slice(
+  const handleSearch = (searchedCategorias: CategoriaType[]) => {
+    setFilteredCategorias(searchedCategorias);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(searchedCategorias.length / itemsPerPage));
+  };
+
+  const paginatedCategorias = filteredCategorias.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -166,9 +176,16 @@ export default function CategoriaTable() {
   return (
     <div className="categoria-container">
       <h1 className="page-title">Gestión de Categorías</h1>
-      <button className="create-btn" onClick={handleCreateClick}>
-        <Plus className="icon" /> Crear Categoría
-      </button>
+      <div className="search-and-create">
+        <button className="create-btn" onClick={handleCreateClick}>
+          <Plus className="icon" /> Crear Categoría
+        </button>
+        <SearchTable
+          data={categorias}
+          onSearch={handleSearch}
+          placeholder="Buscar categorías..."
+        />
+      </div>
       <div className="table-container-categoria">
         <table className="categoria-table">
           <thead>

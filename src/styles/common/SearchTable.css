@@ -1,0 +1,74 @@
+/* Oculta el ícono de cierre predeterminado en inputs de tipo search */
+.search-table-input::-webkit-search-decoration,
+.search-table-input::-webkit-search-results-button,
+.search-table-input::-webkit-search-results-decoration {
+  display: none; /* Esto oculta el ícono predeterminado */
+}
+
+.search-and-create {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-table-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+}
+
+.search-table-input {
+  width: 100%;
+  padding: 0.5rem 2.5rem;
+  font-size: 1rem;
+  border: 1px solid #e0b0ff;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0b0ff;
+  transition: all 0.3s ease;
+}
+
+.search-table-input::placeholder {
+  color: #e0b0ff80;
+}
+
+.search-table-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(153, 50, 204, 0.5);
+}
+
+.search-icon-wrapper {
+  position: absolute;
+  left: 0.75rem;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.search-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #e0b0ff;
+}
+
+.clear-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #e0b0ff;
+}
+
+
+.close-icon {
+  width: 1rem; /* Ajusta el tamaño del ícono según sea necesario */
+  height: 1rem;
+}

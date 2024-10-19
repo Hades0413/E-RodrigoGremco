@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import { fetchProductos, deleteProducto } from "../services/productoService";
 import type { Producto } from "../services/productoService";
 import ProductoDetailsForm from "../components/common/productos/ProductoDetailsForm";
 import ProductoEditForm from "../components/common/productos/ProductoEditForm";
 import ProductoCreateForm from "../components/common/productos/ProductoCreateForm";
+import SearchTable from "../components/common/SearchTable";
 import {
   Info,
   Edit,
@@ -14,13 +15,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "../styles/producto/Producto.css";
+import "../styles/common/SearchTable.css";
 
 const Producto: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
+  const [filteredProductos, setFilteredProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(
-    null
-  );
+  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -29,21 +30,29 @@ const Producto: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
 
-  useEffect(() => {
-    const loadProductos = async () => {
-      try {
-        const productosData = await fetchProductos();
-        const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
-        setProductos(productosOrdenados);
-        setTotalPages(Math.ceil(productosOrdenados.length / itemsPerPage));
-      } catch (error) {
-        setError("Error al cargar los productos.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadProductos = useCallback(async () => {
+    setLoading(true);
+    try {
+      const productosData = await fetchProductos();
+      const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
+      setProductos(productosOrdenados);
+      setFilteredProductos(productosOrdenados);
+      setTotalPages(Math.ceil(productosOrdenados.length / itemsPerPage));
+    } catch (error) {
+      setError("Error al cargar los productos.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+  useEffect(() => {
     loadProductos();
+  }, [loadProductos]);
+
+  const handleSearch = useCallback((filteredData: Producto[]) => {
+    setFilteredProductos(filteredData);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
   }, []);
 
   const handleCreateClick = () => {
@@ -55,14 +64,10 @@ const Producto: React.FC = () => {
     setEditModalOpen(true);
   };
 
-  const handleProductoUpdated = (updatedProducto: Producto) => {
-    setProductos((prevProductos) =>
-      prevProductos.map((producto) =>
-        producto.firebaseDocId === updatedProducto.firebaseDocId
-          ? updatedProducto
-          : producto
-      )
-    );
+  const handleProductoUpdated = async () => {
+    await loadProductos();
+    setEditModalOpen(false);
+    setSelectedProducto(null);
   };
 
   const handleDetailsClick = (producto: Producto) => {
@@ -86,11 +91,7 @@ const Producto: React.FC = () => {
       setLoading(true);
       try {
         await deleteProducto(producto.firebaseDocId!);
-
-        const productosData = await fetchProductos();
-        const productosOrdenados = productosData.sort((a, b) => a.id - b.id);
-        setProductos(productosOrdenados);
-        setTotalPages(Math.ceil(productosOrdenados.length / itemsPerPage));
+        await loadProductos();
 
         Swal.fire({
           title: "¡Eliminado!",
@@ -123,7 +124,12 @@ const Producto: React.FC = () => {
     setCurrentPage(newPage);
   };
 
-  const paginatedProductos = productos.slice(
+  const handleProductoCreated = async () => {
+    await loadProductos();
+    setCreateModalOpen(false);
+  };
+
+  const paginatedProductos = filteredProductos.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -132,10 +138,19 @@ const Producto: React.FC = () => {
     <div className="producto-container">
       <h1 className="page-title">Gestión de Productos</h1>
 
-      <button className="create-btn" onClick={handleCreateClick}>
-        <Plus className="icon" />
-        Crear Producto
-      </button>
+      <div className="search-and-create">
+         <button className="create-btn" onClick={handleCreateClick}>
+          <Plus className="icon" size={20} />
+          Crear Producto
+        </button>
+
+        <SearchTable
+          data={productos}
+          onSearch={handleSearch}
+          placeholder="Buscar productos..."
+        />
+       
+      </div>
 
       <div className="table-container-producto">
         <table className="producto-table">
@@ -272,9 +287,7 @@ const Producto: React.FC = () => {
             <h2 className="modal-title">Crear Producto</h2>
             <ProductoCreateForm
               onClose={handleCloseCreateModal}
-              onProductoCreated={(newProducto: Producto) => {
-                setProductos((prev) => [...prev, newProducto]);
-              }}
+              onProductoCreated={handleProductoCreated}
             />
           </div>
         </div>

@@ -7,9 +7,12 @@ import UsuarioEditForm from "../components/common/usuarios/UsuarioEditForm";
 import UsuarioCreateForm from "../components/common/usuarios/UsuarioCreateForm";
 import "../styles/users/Users.css";
 import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import SearchTable from '../components/common/SearchTable';
+import '../styles/common/SearchTable.css';
 
 const Users: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [filteredUsuarios, setFilteredUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
@@ -26,6 +29,7 @@ const Users: React.FC = () => {
         const usuariosData = await fetchUsuarios();
         const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
         setUsuarios(sortedUsuarios);
+        setFilteredUsuarios(sortedUsuarios);
         setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
       } catch (error) {
         setError("Error al cargar los usuarios.");
@@ -55,6 +59,7 @@ const Users: React.FC = () => {
         await deleteUsuario(firebaseDocId);
         setUsuarios((prev) => {
           const updatedUsuarios = prev.filter((usuario) => usuario.firebaseDocId !== firebaseDocId);
+          setFilteredUsuarios(updatedUsuarios);
           setTotalPages(Math.ceil(updatedUsuarios.length / itemsPerPage));
           return updatedUsuarios;
         });
@@ -109,6 +114,7 @@ const Users: React.FC = () => {
       const usuariosData = await fetchUsuarios();
       const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
       setUsuarios(sortedUsuarios);
+      setFilteredUsuarios(sortedUsuarios);
       setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
     } catch {
       setError("Error al cargar los usuarios.");
@@ -117,7 +123,13 @@ const Users: React.FC = () => {
     }
   };
 
-  const paginatedUsuarios = usuarios.slice(
+  const handleSearch = (searchedUsuarios: Usuario[]) => {
+    setFilteredUsuarios(searchedUsuarios);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(searchedUsuarios.length / itemsPerPage));
+  };
+
+  const paginatedUsuarios = filteredUsuarios.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -126,9 +138,16 @@ const Users: React.FC = () => {
     <div className="categoria-container">
       <h1 className="page-title">Gestión de Usuarios</h1>
 
-      <button className="create-btn" onClick={handleOpenCreate}>
-        <Plus className="icon" /> Crear Usuario
-      </button>
+      <div className="search-and-create">
+        <button className="create-btn" onClick={handleOpenCreate}>
+          <Plus className="icon" /> Crear Usuario
+        </button>
+        <SearchTable
+          data={usuarios}
+          onSearch={handleSearch}
+          placeholder="Buscar usuarios..."
+        />
+      </div>
 
       <div className="table-container-user">
         <table className="categoria-table">
@@ -235,7 +254,7 @@ const Users: React.FC = () => {
             {selectedUsuarioId && (
               <UsuarioEditForm
                 firebaseDocId={selectedUsuarioId}
-                onUsuarioUpdated={handleUsuariosUpdated} // Usar la función actualizada
+                onUsuarioUpdated={handleUsuariosUpdated}
               />
             )}
             <button className="cancel-btn" onClick={handleCloseEdit}>Cerrar</button>
@@ -248,7 +267,7 @@ const Users: React.FC = () => {
           <div className="modal-content">
             <h2 className="modal-title">Crear Usuario</h2>
             <UsuarioCreateForm
-              onUsuarioCreated={handleUsuariosUpdated} // Usar la función actualizada
+              onUsuarioCreated={handleUsuariosUpdated}
             />
             <button className="cancel-btn" onClick={handleCloseCreate}>Cerrar</button>
           </div>
