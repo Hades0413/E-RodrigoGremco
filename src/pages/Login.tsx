@@ -3,26 +3,50 @@ import Swal from "sweetalert2";
 import "@sweetalert2/theme-dark/dark.css";
 import GithubIcon from "../components/icons/GithubIcon";
 import GoogleIcon from "../components/icons/GoogleIcon";
-import { loginWithEmail, loginWithGoogle, loginWithGitHub } from "../services/authService";
+import {
+  loginWithEmail,
+  loginWithGoogle,
+  loginWithGitHub,
+} from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setCurrentUser } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Intentando iniciar sesión con:", { email, password });
+
     try {
-      await loginWithEmail(email, password);
-      Swal.fire({
-        title: "Éxito",
-        text: "Inicio de sesión exitoso",
-        icon: "success",
-        background: "#000",
-        color: "#fff",
-      });
-      navigate("/home");
+      const userData = await loginWithEmail(email, password);
+      console.log("Inicio de sesión exitoso:", userData);
+
+      if (userData) {
+        setCurrentUser(userData);
+        Swal.fire({
+          title: "Éxito",
+          text: `Inicio de sesión exitoso, bienvenido ${userData.nombre}!`,
+          icon: "success",
+          background: "#000",
+          color: "#fff",
+        });
+
+        navigate("/home");
+        console.log("Redirigiendo a /home");
+      } else {
+        console.log("No se encontró el usuario.");
+        Swal.fire({
+          title: "Error",
+          text: "Credenciales incorrectas.",
+          icon: "error",
+          background: "#000",
+          color: "#fff",
+        });
+      }
     } catch (error) {
       console.error("Error al iniciar sesión: ", error);
       Swal.fire({
@@ -36,9 +60,12 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = async () => {
+    console.log("Iniciando sesión con Google...");
     try {
       const result = await loginWithGoogle();
       const user = result.user;
+      console.log("Inicio de sesión con Google exitoso:", user);
+
       Swal.fire({
         title: "Bienvenido!",
         text: `Bienvenido ${user.displayName}!`,
@@ -46,7 +73,9 @@ export default function LoginForm() {
         background: "#000",
         color: "#fff",
       });
+
       navigate("/home");
+      console.log("Redirigiendo a /home");
     } catch (error) {
       console.error("Error al iniciar sesión con Google: ", error);
       Swal.fire({
@@ -60,9 +89,12 @@ export default function LoginForm() {
   };
 
   const handleGitHubLogin = async () => {
+    console.log("Iniciando sesión con GitHub...");
     try {
       const result = await loginWithGitHub();
       const user = result.user;
+      console.log("Inicio de sesión con GitHub exitoso:", user);
+
       Swal.fire({
         title: "Bienvenido!",
         text: `Bienvenido ${user.displayName || user.email}!`,
@@ -70,7 +102,9 @@ export default function LoginForm() {
         background: "#000",
         color: "#fff",
       });
+
       navigate("/home");
+      console.log("Redirigiendo a /home");
     } catch (error) {
       console.error("Error al iniciar sesión con GitHub: ", error);
       Swal.fire({
@@ -84,6 +118,7 @@ export default function LoginForm() {
   };
 
   const handleRegister = () => {
+    console.log("Redirigiendo a la página de registro");
     navigate("/register");
   };
 
@@ -130,7 +165,7 @@ export default function LoginForm() {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color:"#000"
+              color: "#000",
             }}
           />
           <input
@@ -145,7 +180,7 @@ export default function LoginForm() {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color:"#000"
+              color: "#000",
             }}
           />
           <button
@@ -204,7 +239,9 @@ export default function LoginForm() {
               cursor: "pointer",
             }}
           >
-            <GithubIcon style={{ marginRight: "8px", height: "16px", width: "16px" }} />
+            <GithubIcon
+              style={{ marginRight: "8px", height: "16px", width: "16px" }}
+            />
             Github
           </button>
           <button
@@ -220,12 +257,14 @@ export default function LoginForm() {
               cursor: "pointer",
             }}
           >
-            <GoogleIcon style={{ marginRight: "8px", height: "16px", width: "16px" }} />
+            <GoogleIcon
+              style={{ marginRight: "8px", height: "16px", width: "16px" }}
+            />
             Google
           </button>
         </div>
         <button
-          onClick={handleRegister} // Agrega el manejador de eventos aquí
+          onClick={handleRegister}
           style={{
             width: "100%",
             textAlign: "center",
@@ -235,7 +274,7 @@ export default function LoginForm() {
             cursor: "pointer",
           }}
         >
-          No tienes una cuenta? Registrate!
+          No tienes una cuenta? Regístrate!
         </button>
       </div>
     </div>

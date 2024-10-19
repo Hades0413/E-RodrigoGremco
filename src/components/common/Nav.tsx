@@ -2,9 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../styles/common/Nav.css";
 import mascota from "../../assets/img/mascota.png";
 import { logout } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 const Nav = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -45,7 +47,7 @@ const Nav = () => {
         </svg>
       </label>
 
-      <Link to="/home" className="nav-logo-container">
+      <Link to="/" className="nav-logo-container">
         <img src={mascota} alt="Logo" className="nav-logo" />
         <span className="nav-logo-text">RODRIGO GREMCO</span>
       </Link>
@@ -60,7 +62,7 @@ const Nav = () => {
             <Link to="/producto">Producto</Link>
           </li>
           <li>
-            <Link to="/usuarios">usuarios</Link>
+            <Link to="/usuarios">Usuarios</Link>
           </li>
           <li>
             <Link to="/categoria">Categoría</Link>
@@ -69,7 +71,11 @@ const Nav = () => {
             <Link to="/preguntas">Preguntas</Link>
           </li>
           <li>
-            <Link to="/login">Login</Link>
+            {currentUser && (
+              <span>
+                {currentUser.displayName || currentUser.nombre || "Usuario"}
+              </span>
+            )}{" "}
           </li>
           <li>
             <button onClick={handleLogout} className="nav-logout-button">
