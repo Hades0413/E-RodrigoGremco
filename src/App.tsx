@@ -6,38 +6,74 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LoaderWrapper from "./components/ui/LoaderWrapper";
 import "@sweetalert2/theme-dark/dark.css";
-import "@sweetalert2/theme-dark/dark.css";
 import Users from "./pages/Users";
 import Producto from "./pages/Producto";
 import Categoria from "./pages/Categoria";
 import Preguntas from "./pages/Preguntas";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/protected/ProtectedRoute";
 
 function App() {
   return (
-    <LoadingProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          <Route
-            element={
-              <>
-                <LoaderWrapper />
-                <Layout />
-              </>
-            }
-          >
-            <Route path="/home" element={<Home />} />
-            <Route path="/usuarios" element={<Users />} />
-            <Route path="/producto" element={<Producto />} />
-            <Route path="/categoria" element={<Categoria />} />
-            <Route path="/preguntas" element={<Preguntas />} />
-           
-          </Route>
-        </Routes>
-      </Router>
-    </LoadingProvider>
+    <AuthProvider>
+      <LoadingProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              element={
+                <>
+                  <LoaderWrapper />
+                  <Layout />
+                </>
+              }
+            >
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/usuarios"
+                element={
+                  <ProtectedRoute>
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/producto"
+                element={
+                  <ProtectedRoute>
+                    <Producto />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/categoria"
+                element={
+                  <ProtectedRoute>
+                    <Categoria />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/preguntas"
+                element={
+                  <ProtectedRoute>
+                    <Preguntas />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+          </Routes>
+        </Router>
+      </LoadingProvider>
+    </AuthProvider>
   );
 }
 

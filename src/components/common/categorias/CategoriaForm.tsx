@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { updateCategoria } from "../../../services/categoriaService";
-import { Folder, Save } from 'lucide-react'; 
+import { Folder, Save } from "lucide-react";
 import "../../../styles/categoria/CategoriaForm.css";
 
 interface CategoriaFormProps {
   categoria: { firebaseId: string; id: number; nombre: string };
   onClose: () => void;
   onCreate: (nombre: string) => void;
+  onUpdate: (nombre: string) => void;
   isCreating: boolean;
   isViewing?: boolean;
 }
@@ -16,6 +16,7 @@ const CategoriaForm: React.FC<CategoriaFormProps> = ({
   categoria,
   onClose,
   onCreate,
+  onUpdate,
   isCreating,
   isViewing = false,
 }) => {
@@ -35,14 +36,8 @@ const CategoriaForm: React.FC<CategoriaFormProps> = ({
       onCreate(nombre);
     } else {
       try {
-        await updateCategoria(categoria.firebaseId, nombre);
+        await onUpdate(nombre);
         onClose();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Categoría actualizada con éxito",
-          confirmButtonText: "Aceptar",
-        });
       } catch (error) {
         console.error("Error al actualizar la categoría:", error);
         onClose();
@@ -104,7 +99,11 @@ const CategoriaForm: React.FC<CategoriaFormProps> = ({
                 {isCreating ? "Crear Categoría" : "Guardar Cambios"}
               </button>
             )}
-            <button type="button" className="cancel-btn-categoria" onClick={onClose}>
+            <button
+              type="button"
+              className="cancel-btn-categoria"
+              onClick={onClose}
+            >
               Cancelar
             </button>
           </div>

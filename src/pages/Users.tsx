@@ -5,9 +5,8 @@ import type { Usuario } from "../services/usuarioService";
 import UsuarioDetailsForm from "../components/common/usuarios/UsuarioDetailsForm";
 import UsuarioEditForm from "../components/common/usuarios/UsuarioEditForm";
 import UsuarioCreateForm from "../components/common/usuarios/UsuarioCreateForm";
-import "../styles/users/Users.css"
-import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import "../styles/users/Users.css";
+import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Users: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -102,6 +101,20 @@ const Users: React.FC = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  const handleUsuariosUpdated = async () => {
+    setLoading(true);
+    try {
+      const usuariosData = await fetchUsuarios();
+      const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
+      setUsuarios(sortedUsuarios);
+      setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
+    } catch {
+      setError("Error al cargar los usuarios.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const paginatedUsuarios = usuarios.slice(
@@ -222,20 +235,7 @@ const Users: React.FC = () => {
             {selectedUsuarioId && (
               <UsuarioEditForm
                 firebaseDocId={selectedUsuarioId}
-                onUsuarioUpdated={() => {
-                  handleCloseEdit();
-                  setLoading(true);
-                  fetchUsuarios()
-                    .then((usuariosData) => {
-                      const sortedUsuarios = usuariosData.sort(
-                        (a, b) => a.id - b.id
-                      );
-                      setUsuarios(sortedUsuarios);
-                      setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
-                    })
-                    .catch(() => setError("Error al cargar los usuarios"))
-                    .finally(() => setLoading(false));
-                }}
+                onUsuarioUpdated={handleUsuariosUpdated} // Usar la función actualizada
               />
             )}
             <button className="cancel-btn" onClick={handleCloseEdit}>Cerrar</button>
@@ -247,19 +247,8 @@ const Users: React.FC = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="modal-title">Crear Usuario</h2>
-            <UsuarioCreateForm 
-              onUsuarioCreated={() => {
-                handleCloseCreate();
-                setLoading(true);
-                fetchUsuarios()
-                  .then((usuariosData) => {
-                    const sortedUsuarios = usuariosData.sort((a, b) => a.id - b.id);
-                    setUsuarios(sortedUsuarios);
-                    setTotalPages(Math.ceil(sortedUsuarios.length / itemsPerPage));
-                  })
-                  .catch(() => setError("Error al cargar los usuarios"))
-                  .finally(() => setLoading(false));
-              }} 
+            <UsuarioCreateForm
+              onUsuarioCreated={handleUsuariosUpdated} // Usar la función actualizada
             />
             <button className="cancel-btn" onClick={handleCloseCreate}>Cerrar</button>
           </div>

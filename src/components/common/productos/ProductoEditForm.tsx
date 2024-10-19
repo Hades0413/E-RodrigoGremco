@@ -3,14 +3,27 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebase.config";
 import type { Producto } from "../../../services/productoService";
 import Swal from "sweetalert2";
-import { X, Gamepad, FileText, DollarSign, Package, Image, Tag } from 'lucide-react';
+import {
+  X,
+  Gamepad,
+  FileText,
+  DollarSign,
+  Package,
+  Image,
+  Tag,
+} from "lucide-react";
 
 interface ProductoEditFormProps {
   producto: Producto;
   onClose: () => void;
+  onProductoUpdated: (updatedProducto: Producto) => void; // Nueva propiedad
 }
 
-export default function ProductoEditForm({ producto, onClose }: ProductoEditFormProps) {
+export default function ProductoEditForm({
+  producto,
+  onClose,
+  onProductoUpdated, // Recibiendo la nueva propiedad
+}: ProductoEditFormProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Producto>(producto);
@@ -20,13 +33,18 @@ export default function ProductoEditForm({ producto, onClose }: ProductoEditForm
     setLoading(false);
   }, [producto]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: name === "precio" || name === "stock_disponible" || name === "categoria_id" 
-        ? parseInt(value, 10) 
-        : value,
+      [name]:
+        name === "precio" ||
+        name === "stock_disponible" ||
+        name === "categoria_id"
+          ? parseInt(value, 10)
+          : value,
     }));
   };
 
@@ -42,6 +60,9 @@ export default function ProductoEditForm({ producto, onClose }: ProductoEditForm
       const productoRef = doc(db, "productos", producto.firebaseDocId);
       await updateDoc(productoRef, { ...formData });
 
+      // Notificar al componente padre sobre la actualización
+      onProductoUpdated({ ...formData, firebaseDocId: producto.firebaseDocId });
+
       Swal.fire({
         title: "Éxito!",
         text: "El producto fue editado correctamente.",
@@ -55,7 +76,12 @@ export default function ProductoEditForm({ producto, onClose }: ProductoEditForm
     }
   };
 
-  if (loading) return <div className="loading"><div className="spinner"></div></div>;
+  if (loading)
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+      </div>
+    );
   if (error) return <div className="error-message">{error}</div>;
 
   return (
@@ -150,27 +176,33 @@ export default function ProductoEditForm({ producto, onClose }: ProductoEditForm
               value={formData.imagen_producto}
               onChange={handleInputChange}
             />
-{formData.imagen_producto && (
-  <img
-    src={formData.imagen_producto}
-    alt="Vista previa del producto"
-    className="image-preview" // Elimina el punto "." antes del nombre de la clase
-    style={{
-      maxWidth: "150px",
-      height: "auto",
-      display: "block",
-      margin: "0 auto",
-      borderRadius: "12px"
-    }}
-  />
-)}
-
-
+            {formData.imagen_producto && (
+              <img
+                src={formData.imagen_producto}
+                alt="Vista previa del producto"
+                className="image-preview"
+                style={{
+                  maxWidth: "150px",
+                  height: "auto",
+                  display: "block",
+                  margin: "0 auto",
+                  borderRadius: "12px",
+                }}
+              />
+            )}
           </div>
-         
+
           <div className="button-group">
-            <button type="submit" className="submit-btn">Actualizar Producto</button>
-            <button type="button" className="cancel-btn-producto" onClick={onClose}>Cancelar</button>
+            <button type="submit" className="submit-btn">
+              Actualizar Producto
+            </button>
+            <button
+              type="button"
+              className="cancel-btn-producto"
+              onClick={onClose}
+            >
+              Cancelar
+            </button>
           </div>
         </form>
       </div>

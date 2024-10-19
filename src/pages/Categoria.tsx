@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { fetchCategorias, deleteCategoria, createCategoria, fetchLastCategoryId } from "../services/categoriaService";
+import {
+  fetchCategorias,
+  deleteCategoria,
+  createCategoria,
+  fetchLastCategoryId,
+  updateCategoria,
+} from "../services/categoriaService";
 import CategoriaForm from "../components/common/categorias/CategoriaForm";
-import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  Info,
+  Edit,
+  Trash2,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import "../styles/categoria/Categoria.css";
 
 interface CategoriaType {
@@ -14,7 +27,8 @@ interface CategoriaType {
 export default function CategoriaTable() {
   const [categorias, setCategorias] = useState<CategoriaType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategoria, setSelectedCategoria] = useState<CategoriaType | null>(null);
+  const [selectedCategoria, setSelectedCategoria] =
+    useState<CategoriaType | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
@@ -27,8 +41,9 @@ export default function CategoriaTable() {
     const obtenerCategorias = async () => {
       try {
         const categoriasList = await fetchCategorias();
-        setCategorias(categoriasList);
-        setTotalPages(Math.ceil(categoriasList.length / itemsPerPage));
+        const categoriasOrdenadas = categoriasList.sort((a, b) => a.id - b.id);
+        setCategorias(categoriasOrdenadas);
+        setTotalPages(Math.ceil(categoriasOrdenadas.length / itemsPerPage));
       } catch (error) {
         setError("Error al obtener las categorías.");
       } finally {
@@ -74,11 +89,7 @@ export default function CategoriaTable() {
       setLoading(true);
       try {
         await deleteCategoria(firebaseId);
-        setCategorias((prev) => {
-          const updatedCategorias = prev.filter((c) => c.id !== id);
-          setTotalPages(Math.ceil(updatedCategorias.length / itemsPerPage));
-          return updatedCategorias;
-        });
+        await fetchAndSetCategorias();
         Swal.fire({
           title: "¡Eliminado!",
           text: `La categoría "${nombre}" fue eliminada correctamente.`,
@@ -103,9 +114,8 @@ export default function CategoriaTable() {
     try {
       const lastId = await fetchLastCategoryId();
       await createCategoria(nombre, lastId);
-      const newCategorias = await fetchCategorias();
-      setCategorias(newCategorias);
-      setTotalPages(Math.ceil(newCategorias.length / itemsPerPage));
+      await fetchAndSetCategorias();
+
       Swal.fire({
         icon: "success",
         title: "Categoría creada",
@@ -114,6 +124,33 @@ export default function CategoriaTable() {
       handleCloseModal();
     } catch (error) {
       setError("Error al crear la categoría.");
+    }
+  };
+
+  const handleUpdate = async (nombre: string) => {
+    if (selectedCategoria) {
+      await updateCategoria(selectedCategoria.firebaseId, nombre);
+      await fetchAndSetCategorias();
+      Swal.fire({
+        icon: "success",
+        title: "Categoría actualizada",
+        text: "La categoría se ha actualizado con éxito.",
+      });
+      handleCloseModal();
+    }
+  };
+
+  const fetchAndSetCategorias = async () => {
+    setLoading(true);
+    try {
+      const categoriasList = await fetchCategorias();
+      const categoriasOrdenadas = categoriasList.sort((a, b) => a.id - b.id);
+      setCategorias(categoriasOrdenadas);
+      setTotalPages(Math.ceil(categoriasOrdenadas.length / itemsPerPage));
+    } catch (error) {
+      setError("Error al obtener las categorías.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,13 +192,22 @@ export default function CategoriaTable() {
                   <td>{categoria.nombre}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="action-btn info" onClick={() => handleDetailsClick(categoria)}>
+                      <button
+                        className="action-btn info"
+                        onClick={() => handleDetailsClick(categoria)}
+                      >
                         <Info className="icon" />
                       </button>
-                      <button className="action-btn edit" onClick={() => handleEditClick(categoria)}>
+                      <button
+                        className="action-btn edit"
+                        onClick={() => handleEditClick(categoria)}
+                      >
                         <Edit className="icon" />
                       </button>
-                      <button className="action-btn delete" onClick={() => handleDeleteClick(categoria)}>
+                      <button
+                        className="action-btn delete"
+                        onClick={() => handleDeleteClick(categoria)}
+                      >
                         <Trash2 className="icon" />
                       </button>
                     </div>
@@ -170,7 +216,9 @@ export default function CategoriaTable() {
               ))
             ) : (
               <tr>
-                <td colSpan={3} className="no-categorias">No hay categorías disponibles.</td>
+                <td colSpan={3} className="no-categorias">
+                  No hay categorías disponibles.
+                </td>
               </tr>
             )}
           </tbody>
@@ -189,7 +237,9 @@ export default function CategoriaTable() {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              className={`pagination-btn ${
+                currentPage === page ? "active" : ""
+              }`}
             >
               {page}
             </button>
@@ -207,16 +257,25 @@ export default function CategoriaTable() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="modal-title">
-              {isCreating ? "Crear Categoría" : isViewing ? "Detalles de Categoría" : "Editar Categoría"}
+              {isCreating
+                ? "Crear Categoría"
+                : isViewing
+                ? "Detalles de Categoría"
+                : "Editar Categoría"}
             </h2>
             <CategoriaForm
-              categoria={selectedCategoria || { firebaseId: "", id: 0, nombre: "" }}
+              categoria={
+                selectedCategoria || { firebaseId: "", id: 0, nombre: "" }
+              }
               onClose={handleCloseModal}
               onCreate={handleCreate}
+              onUpdate={handleUpdate}
               isCreating={isCreating}
               isViewing={isViewing}
             />
-            <button className="cancel-btn-categoria" onClick={handleCloseModal}>Cancelar</button>
+            <button className="cancel-btn-categoria" onClick={handleCloseModal}>
+              Cancelar
+            </button>
           </div>
         </div>
       )}

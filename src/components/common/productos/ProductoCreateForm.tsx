@@ -8,9 +8,10 @@ import "../../../styles/producto/ProductoCreateForm.css";
 
 interface ProductoCreateFormProps {
   onClose: () => void;
+  onProductoCreated: (producto: Producto) => void;
 }
 
-const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose }) => {
+const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose, onProductoCreated }) => {
   const [nuevoProducto, setNuevoProducto] = useState<Omit<Producto, "id" | "fecha_adicion">>({
     nombre: "",
     descripcion: "",
@@ -52,6 +53,7 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose }) => {
         text: "El producto se ha creado correctamente.",
         confirmButtonText: "Aceptar",
       });
+      onProductoCreated(productoConId); // Llama al callback para actualizar la lista
       onClose();
     } else {
       console.error("Error al crear el producto.");
@@ -160,21 +162,19 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose }) => {
               />
             </div>
           </div>
-         {nuevoProducto.imagen_producto && (
-  <img
-    src={nuevoProducto.imagen_producto}
-    alt="Vista previa del producto"
-    className="image-preview"
-    style={{
-      maxWidth: '100px', 
-      height: 'auto',
-      display: 'block', // Asegúrate de que sea un bloque para centrarlo
-      margin: '1rem auto' // Margen superior e inferior y centrado horizontal
-    }}
-  />
-)}
-
-
+          {nuevoProducto.imagen_producto && (
+            <img
+              src={nuevoProducto.imagen_producto}
+              alt="Vista previa del producto"
+              className="image-preview"
+              style={{
+                maxWidth: '100px',
+                height: 'auto',
+                display: 'block',
+                margin: '1rem auto',
+              }}
+            />
+          )}
           <div className="button-group">
             <button type="submit" className="submit-btn">Crear Producto</button>
             <button type="button" className="cancel-btn-producto" onClick={onClose}>Cancelar</button>
