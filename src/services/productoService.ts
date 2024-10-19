@@ -39,7 +39,6 @@ export const fetchProductos = async (): Promise<Producto[]> => {
   }
 };
 
-
 export const createProducto = async (
   nuevoProducto: Producto
 ): Promise<boolean> => {

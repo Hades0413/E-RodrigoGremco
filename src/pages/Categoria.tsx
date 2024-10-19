@@ -17,8 +17,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "../styles/categoria/Categoria.css";
-import SearchTable from '../components/common/SearchTable';
-import '../styles/common/SearchTable.css';
+import SearchTable from "../components/common/SearchTable";
+import "../styles/common/SearchTable.css";
 
 interface CategoriaType {
   firebaseId: string;
@@ -28,9 +28,12 @@ interface CategoriaType {
 
 export default function CategoriaTable() {
   const [categorias, setCategorias] = useState<CategoriaType[]>([]);
-  const [filteredCategorias, setFilteredCategorias] = useState<CategoriaType[]>([]);
+  const [filteredCategorias, setFilteredCategorias] = useState<CategoriaType[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
-  const [selectedCategoria, setSelectedCategoria] = useState<CategoriaType | null>(null);
+  const [selectedCategoria, setSelectedCategoria] =
+    useState<CategoriaType | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isViewing, setIsViewing] = useState(false);

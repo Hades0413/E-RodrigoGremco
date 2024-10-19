@@ -24,8 +24,7 @@ const Home: React.FC = () => {
         <Loader />
       ) : (
         <div>
-          {/* <h1>yara causa</h1> */}
-          <BannerCarrousel/>
+          <BannerCarrousel />
           <ProductoListar />
         </div>
       )}

@@ -9,7 +9,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { format } from "date-fns";
-import bcrypt from "bcryptjs"; 
+import bcrypt from "bcryptjs";
 
 export interface Usuario {
   id: number;

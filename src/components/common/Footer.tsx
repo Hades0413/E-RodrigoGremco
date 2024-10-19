@@ -17,7 +17,8 @@ const Footer = () => {
           <div className="footer-col" id="footer-company">
             <img src={mascota} alt="Logo" className="footer-logo" />
             <p>
-              En Rodrigo Gremco, ofrecemos los mejores videojuegos a descuentos únicos precio veneco.
+              En Rodrigo Gremco, ofrecemos los mejores videojuegos a descuentos
+              únicos precio veneco.
             </p>
             <div className="footer-social">
               <a

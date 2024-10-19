@@ -21,7 +21,9 @@ const Producto: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [filteredProductos, setFilteredProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(null);
+  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(
+    null
+  );
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -139,7 +141,7 @@ const Producto: React.FC = () => {
       <h1 className="page-title">Gestión de Productos</h1>
 
       <div className="search-and-create">
-         <button className="create-btn" onClick={handleCreateClick}>
+        <button className="create-btn" onClick={handleCreateClick}>
           <Plus className="icon" size={20} />
           Crear Producto
         </button>
@@ -149,7 +151,6 @@ const Producto: React.FC = () => {
           onSearch={handleSearch}
           placeholder="Buscar productos..."
         />
-       
       </div>
 
       <div className="table-container-producto">

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import { createProducto, fetchNextProductId, Producto } from "../../../services/productoService";
+import {
+  createProducto,
+  fetchNextProductId,
+  Producto,
+} from "../../../services/productoService";
 import FileDescription from "../../icons/Inventory";
-import { Gamepad, DollarSign, Package, Image } from 'lucide-react';
+import { Gamepad, DollarSign, Package, Image } from "lucide-react";
 import Category from "../../icons/Category";
 import "../../../styles/producto/ProductoCreateForm.css";
 
@@ -11,8 +15,13 @@ interface ProductoCreateFormProps {
   onProductoCreated: (producto: Producto) => void;
 }
 
-const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose, onProductoCreated }) => {
-  const [nuevoProducto, setNuevoProducto] = useState<Omit<Producto, "id" | "fecha_adicion">>({
+const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
+  onClose,
+  onProductoCreated,
+}) => {
+  const [nuevoProducto, setNuevoProducto] = useState<
+    Omit<Producto, "id" | "fecha_adicion">
+  >({
     nombre: "",
     descripcion: "",
     precio: 0,
@@ -21,9 +30,14 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose, onProd
     imagen_producto: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    const isNumberInput = name === "precio" || name === "stock_disponible" || name === "categoria_id";
+    const isNumberInput =
+      name === "precio" ||
+      name === "stock_disponible" ||
+      name === "categoria_id";
     setNuevoProducto((prevProducto) => ({
       ...prevProducto,
       [name]: isNumberInput ? Number(value) : value,
@@ -168,16 +182,24 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({ onClose, onProd
               alt="Vista previa del producto"
               className="image-preview"
               style={{
-                maxWidth: '100px',
-                height: 'auto',
-                display: 'block',
-                margin: '1rem auto',
+                maxWidth: "100px",
+                height: "auto",
+                display: "block",
+                margin: "1rem auto",
               }}
             />
           )}
           <div className="button-group">
-            <button type="submit" className="submit-btn">Crear Producto</button>
-            <button type="button" className="cancel-btn-producto" onClick={onClose}>Cancelar</button>
+            <button type="submit" className="submit-btn">
+              Crear Producto
+            </button>
+            <button
+              type="button"
+              className="cancel-btn-producto"
+              onClick={onClose}
+            >
+              Cancelar
+            </button>
           </div>
         </form>
       </div>

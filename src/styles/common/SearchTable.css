@@ -1,8 +1,7 @@
-/* Oculta el ícono de cierre predeterminado en inputs de tipo search */
 .search-table-input::-webkit-search-decoration,
 .search-table-input::-webkit-search-results-button,
 .search-table-input::-webkit-search-results-decoration {
-  display: none; /* Esto oculta el ícono predeterminado */
+  display: none;
 }
 
 .search-and-create {
@@ -67,8 +66,7 @@
   color: #e0b0ff;
 }
 
-
 .close-icon {
-  width: 1rem; /* Ajusta el tamaño del ícono según sea necesario */
+  width: 1rem;
   height: 1rem;
 }

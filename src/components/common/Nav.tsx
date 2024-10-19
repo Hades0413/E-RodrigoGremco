@@ -17,6 +17,9 @@ const Nav = () => {
     }
   };
 
+  // Convertir el valor de isAdmin a número y compararlo
+  const isAdmin = currentUser ? currentUser.es_admin : false;
+
   return (
     <nav className="nav-container">
       <input type="checkbox" id="nav-sidebar-active" />
@@ -53,29 +56,41 @@ const Nav = () => {
       </Link>
 
       <div className="nav-right">
-        <img src={mascota} alt="Logo" className="nav-logo-responsive" />
+        <img
+          loading="lazy"
+          src={mascota}
+          alt="Logo"
+          className="nav-logo-responsive"
+        />
         <ul className="nav-links">
           <li>
             <Link to="/home">Home</Link>
           </li>
-          <li>
-            <Link to="/producto">Producto</Link>
-          </li>
-          <li>
-            <Link to="/usuarios">Usuarios</Link>
-          </li>
-          <li>
-            <Link to="/categoria">Categoría</Link>
-          </li>
+          {isAdmin && (
+            <>
+              <li>
+                <Link to="/producto">Producto</Link>
+              </li>
+              <li>
+                <Link to="/usuarios">Usuarios</Link>
+              </li>
+              <li>
+                <Link to="/categoria">Categoría</Link>
+              </li>
+            </>
+          )}
           <li>
             <Link to="/preguntas">Preguntas</Link>
+          </li>
+          <li>
+            <Link to="/goats">Goats</Link>
           </li>
           <li>
             {currentUser && (
               <span>
                 {currentUser.displayName || currentUser.nombre || "Usuario"}
               </span>
-            )}{" "}
+            )}
           </li>
           <li>
             <button onClick={handleLogout} className="nav-logout-button">

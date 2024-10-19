@@ -6,16 +6,25 @@ import UsuarioDetailsForm from "../components/common/usuarios/UsuarioDetailsForm
 import UsuarioEditForm from "../components/common/usuarios/UsuarioEditForm";
 import UsuarioCreateForm from "../components/common/usuarios/UsuarioCreateForm";
 import "../styles/users/Users.css";
-import { Info, Edit, Trash2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
-import SearchTable from '../components/common/SearchTable';
-import '../styles/common/SearchTable.css';
+import {
+  Info,
+  Edit,
+  Trash2,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import SearchTable from "../components/common/SearchTable";
+import "../styles/common/SearchTable.css";
 
 const Users: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(null);
+  const [selectedUsuarioId, setSelectedUsuarioId] = useState<string | null>(
+    null
+  );
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -58,7 +67,9 @@ const Users: React.FC = () => {
       try {
         await deleteUsuario(firebaseDocId);
         setUsuarios((prev) => {
-          const updatedUsuarios = prev.filter((usuario) => usuario.firebaseDocId !== firebaseDocId);
+          const updatedUsuarios = prev.filter(
+            (usuario) => usuario.firebaseDocId !== firebaseDocId
+          );
           setFilteredUsuarios(updatedUsuarios);
           setTotalPages(Math.ceil(updatedUsuarios.length / itemsPerPage));
           return updatedUsuarios;
@@ -178,13 +189,29 @@ const Users: React.FC = () => {
                   <td>{usuario.es_admin ? "Sí" : "No"}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="action-btn info" onClick={() => handleOpenDetails(usuario.firebaseDocId!)}>
+                      <button
+                        className="action-btn info"
+                        onClick={() =>
+                          handleOpenDetails(usuario.firebaseDocId!)
+                        }
+                      >
                         <Info className="icon" />
                       </button>
-                      <button className="action-btn edit" onClick={() => handleOpenEdit(usuario.firebaseDocId!)}>
+                      <button
+                        className="action-btn edit"
+                        onClick={() => handleOpenEdit(usuario.firebaseDocId!)}
+                      >
                         <Edit className="icon" />
                       </button>
-                      <button className="action-btn delete" onClick={() => handleDeleteClick(usuario.firebaseDocId!, usuario.nombre)}>
+                      <button
+                        className="action-btn delete"
+                        onClick={() =>
+                          handleDeleteClick(
+                            usuario.firebaseDocId!,
+                            usuario.nombre
+                          )
+                        }
+                      >
                         <Trash2 className="icon" />
                       </button>
                     </div>
@@ -193,7 +220,9 @@ const Users: React.FC = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={6} className="no-categorias">No hay usuarios disponibles.</td>
+                <td colSpan={6} className="no-categorias">
+                  No hay usuarios disponibles.
+                </td>
               </tr>
             )}
           </tbody>
@@ -213,7 +242,9 @@ const Users: React.FC = () => {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              className={`pagination-btn ${
+                currentPage === page ? "active" : ""
+              }`}
             >
               {page}
             </button>
@@ -242,7 +273,9 @@ const Users: React.FC = () => {
             {selectedUsuarioId && (
               <UsuarioDetailsForm firebaseDocId={selectedUsuarioId} />
             )}
-            <button className="cancel-btn" onClick={handleCloseDetails}>Cerrar</button>
+            <button className="cancel-btn" onClick={handleCloseDetails}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
@@ -257,7 +290,9 @@ const Users: React.FC = () => {
                 onUsuarioUpdated={handleUsuariosUpdated}
               />
             )}
-            <button className="cancel-btn" onClick={handleCloseEdit}>Cerrar</button>
+            <button className="cancel-btn" onClick={handleCloseEdit}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
@@ -266,10 +301,10 @@ const Users: React.FC = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="modal-title">Crear Usuario</h2>
-            <UsuarioCreateForm
-              onUsuarioCreated={handleUsuariosUpdated}
-            />
-            <button className="cancel-btn" onClick={handleCloseCreate}>Cerrar</button>
+            <UsuarioCreateForm onUsuarioCreated={handleUsuariosUpdated} />
+            <button className="cancel-btn" onClick={handleCloseCreate}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}

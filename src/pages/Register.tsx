@@ -18,7 +18,7 @@ const Register: React.FC = () => {
         correoElectronico,
         contrasena,
         direccionEnvio,
-        false // Por defecto, el usuario no es admin
+        false
       );
       Swal.fire({
         title: "Éxito",
@@ -31,7 +31,7 @@ const Register: React.FC = () => {
       setCorreoElectronico("");
       setContrasena("");
       setDireccionEnvio("");
-      navigate("/login"); // Navegar a la página de inicio de sesión después del registro
+      navigate("/login");
     } catch (error) {
       console.error("Error al registrar el usuario: ", error);
       Swal.fire({
@@ -75,8 +75,9 @@ const Register: React.FC = () => {
           Registrarse
         </h2>
         <form onSubmit={handleRegistro} style={{ marginBottom: "24px" }}>
-          
-          <label style={{ display: "block", marginBottom: "6px", color: "#000" }}>
+          <label
+            style={{ display: "block", marginBottom: "6px", color: "#000" }}
+          >
             Nombre
           </label>
           <input
@@ -91,11 +92,13 @@ const Register: React.FC = () => {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color: "#000"
+              color: "#000",
             }}
           />
 
-          <label style={{ display: "block", marginBottom: "6px", color: "#000" }}>
+          <label
+            style={{ display: "block", marginBottom: "6px", color: "#000" }}
+          >
             Correo Electrónico
           </label>
           <input
@@ -110,11 +113,13 @@ const Register: React.FC = () => {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color: "#000"
+              color: "#000",
             }}
           />
 
-          <label style={{ display: "block", marginBottom: "6px", color: "#000" }}>
+          <label
+            style={{ display: "block", marginBottom: "6px", color: "#000" }}
+          >
             Contraseña
           </label>
           <input
@@ -129,11 +134,13 @@ const Register: React.FC = () => {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color: "#000"
+              color: "#000",
             }}
           />
 
-          <label style={{ display: "block", marginBottom: "6px", color: "#000" }}>
+          <label
+            style={{ display: "block", marginBottom: "6px", color: "#000" }}
+          >
             Dirección de Envío
           </label>
           <input
@@ -147,7 +154,7 @@ const Register: React.FC = () => {
               marginBottom: "12px",
               border: "1px solid #d1d5db",
               borderRadius: "4px",
-              color: "#000"
+              color: "#000",
             }}
           />
 
@@ -167,7 +174,7 @@ const Register: React.FC = () => {
           </button>
         </form>
         <button
-          onClick={() => navigate("/")} // Redirigir a la página de inicio de sesión
+          onClick={() => navigate("/")}
           style={{
             width: "100%",
             textAlign: "center",
