@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 export default function FluentPremium12Regular(props: SVGProps<SVGSVGElement>) {

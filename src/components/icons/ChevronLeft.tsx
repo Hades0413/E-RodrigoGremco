@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 export default function IconParkSolidLeftC(props: SVGProps<SVGSVGElement>) {

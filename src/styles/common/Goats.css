@@ -1,0 +1,149 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #1a0933;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.card {
+  width: 300px;
+  background: linear-gradient(145deg, #4a0082 0%, #7b00ff 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(123, 0, 255, 0.4);
+}
+
+.card-lider {
+  width: 340px;
+  background: linear-gradient(145deg, #ffd700 0%, #ffa500 100%);
+}
+
+.imageContainer {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+}
+
+.content {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.name {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.nickname {
+  color: #bb86fc;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.role {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  fill: none;
+  stroke: #ffebff;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 3px #bb86fc);
+}
+
+.role span {
+  color: #ffffff;
+}
+
+.email {
+  color: #bb86fc;
+  font-size: 0.9rem;
+}
+
+.card-lider .name,
+.card-lider .role span,
+.card-lider .nickname,
+.card-lider .email {
+  color: #4a0082;
+}
+
+.card-lider .icon {
+  stroke: #fffefb;
+  filter: drop-shadow(0 0 3px #ffd700);
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px #7b00ff, 0 0 10px #7b00ff, 0 0 15px #7b00ff,
+      0 0 20px #7b00ff;
+  }
+  100% {
+    box-shadow: 0 0 10px #7b00ff, 0 0 20px #7b00ff, 0 0 30px #7b00ff,
+      0 0 40px #7b00ff;
+  }
+}
+
+.card:hover {
+  animation: neonPulse 1.5s infinite alternate;
+}
+
+@keyframes goldenPulse {
+  0% {
+    box-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 15px #ffd700,
+      0 0 20px #ffd700;
+  }
+  100% {
+    box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700,
+      0 0 40px #ffd700;
+  }
+}
+
+.card-lider:hover {
+  animation: goldenPulse 1.5s infinite alternate;
+}
+
+@media (max-width: 1200px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-lider {
+    order: 3;
+  }
+}
