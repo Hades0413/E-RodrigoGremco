@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 const IconParkSolidLeftC: React.FC<SVGProps<SVGSVGElement>> = (props) => {

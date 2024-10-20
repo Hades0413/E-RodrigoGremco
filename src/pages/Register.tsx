@@ -31,7 +31,7 @@ const Register: React.FC = () => {
       setCorreoElectronico("");
       setContrasena("");
       setDireccionEnvio("");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Error al registrar el usuario: ", error);
       Swal.fire({

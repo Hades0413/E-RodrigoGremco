@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 const IcBaselineAccessTime: React.FC<SVGProps<SVGSVGElement>> = (props) => {

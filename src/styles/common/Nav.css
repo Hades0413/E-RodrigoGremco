@@ -119,6 +119,52 @@
   display: none;
 }
 
+/* Estilos para el nombre de usuario y la insignia */
+.nav-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(45deg, #4a0082, #7b00ff);
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0 15px rgba(123, 0, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.nav-user-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(123, 0, 255, 0.8);
+}
+
+.nav-user-name {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.nav-user-badge {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nav-user-badge.platinum {
+  background: linear-gradient(45deg, #e5e4e2, #b4b4b4);
+  color: #000;
+  box-shadow: 0 0 10px rgba(229, 228, 226, 0.5);
+}
+
+.nav-user-badge.admin {
+  background: linear-gradient(45deg, #ffd700, #ff8c00);
+  color: #000;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
 @media (max-width: 1250px) {
   .nav-logo {
     padding-left: 1rem;
@@ -205,5 +251,10 @@
 
   #nav-sidebar-active:checked ~ .nav-right .nav-links {
     display: block;
+  }
+
+  .nav-user-container {
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }

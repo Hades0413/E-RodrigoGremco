@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 const MdiGoogle: React.FC<SVGProps<SVGSVGElement>> = (props) => {

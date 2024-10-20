@@ -1,10 +1,12 @@
+import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/common/Nav.css";
 import mascota from "../../assets/img/mascota.png";
 import { logout } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
+import { Home, Package, Users, FolderTree, HelpCircle, Trophy, LogOut } from 'lucide-react';
 
-const Nav = () => {
+const Nav: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
@@ -50,7 +52,7 @@ const Nav = () => {
         </svg>
       </label>
 
-      <Link to="/" className="nav-logo-container">
+      <Link to="/home" className="nav-logo-container">
         <img src={mascota} alt="Logo" className="nav-logo" />
         <span className="nav-logo-text">RODRIGO GREMCO</span>
       </Link>
@@ -64,37 +66,40 @@ const Nav = () => {
         />
         <ul className="nav-links">
           <li>
-            <Link to="/home">Home</Link>
+            <Link to="/home"><Home size={20} className="nav-icon" /> Home</Link>
           </li>
           {isAdmin && (
             <>
               <li>
-                <Link to="/producto">Producto</Link>
+                <Link to="/producto"><Package size={20} className="nav-icon" /> Producto</Link>
               </li>
               <li>
-                <Link to="/usuarios">Usuarios</Link>
+                <Link to="/usuarios"><Users size={20} className="nav-icon" /> Usuarios</Link>
               </li>
               <li>
-                <Link to="/categoria">Categoría</Link>
+                <Link to="/categoria"><FolderTree size={20} className="nav-icon" /> Categoría</Link>
               </li>
             </>
           )}
           <li>
-            <Link to="/preguntas">Preguntas</Link>
+            <Link to="/preguntas"><HelpCircle size={20} className="nav-icon" /> Preguntas</Link>
           </li>
           <li>
-            <Link to="/goats">Goats</Link>
+            <Link to="/goats"><Trophy size={20} className="nav-icon" /> Goats</Link>
           </li>
-          <li>
-            {currentUser && (
-              <span>
+          {currentUser && (
+            <li className="nav-user-container">
+              <span className="nav-user-name">
                 {currentUser.displayName || currentUser.nombre || "Usuario"}
               </span>
-            )}
-          </li>
+              <span className={`nav-user-badge ${isAdmin ? 'admin' : 'platinum'}`}>
+                {isAdmin ? 'ADMIN' : 'PLATINIUM'}
+              </span>
+            </li>
+          )}
           <li>
             <button onClick={handleLogout} className="nav-logout-button">
-              Cerrar Sesión
+              <LogOut size={20} className="nav-icon" /> Cerrar Sesión
             </button>
           </li>
         </ul>

@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 const FluentPremium12Regular: React.FC<SVGProps<SVGSVGElement>> = (props) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 const MaterialSymbolsCategory: React.FC<SVGProps<SVGSVGElement>> = (props) => {

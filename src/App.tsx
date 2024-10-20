@@ -10,6 +10,7 @@ import Users from "./pages/Users";
 import Producto from "./pages/Producto";
 import Categoria from "./pages/Categoria";
 import Preguntas from "./pages/Preguntas";
+import Goats from "./pages/Goats"; // Añade esta línea para importar el componente Goats
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
 
@@ -66,6 +67,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Preguntas />
+                  </ProtectedRoute>
+                }
+              />
+              {/* Añade esta nueva ruta para el componente Goats */}
+              <Route
+                path="/goats"
+                element={
+                  <ProtectedRoute>
+                    <Goats />
                   </ProtectedRoute>
                 }
               />
