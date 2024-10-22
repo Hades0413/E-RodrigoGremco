@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Usuario, fetchUsuarioByFirebaseDocId, updateUsuario } from "../../../services/usuarioService";
+import {
+  Usuario,
+  fetchUsuarioByFirebaseDocId,
+  updateUsuario,
+} from "../../../services/usuarioService";
 import Swal from "sweetalert2";
 
 interface UsuarioEditFormProps {
   firebaseDocId: string;
-  onUsuarioUpdated: (updatedUsuario: Usuario) => void; // Mantener el tipo Usuario completo
+  onUsuarioUpdated: (updatedUsuario: Usuario) => void;
+  onClose: () => void;
 }
 
-const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsuarioUpdated }) => {
+const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({
+  firebaseDocId,
+  onUsuarioUpdated,
+  onClose,
+}) => {
   const [usuario, setUsuario] = useState<Partial<Usuario>>({
     nombre: "",
     correo_electronico: "",
@@ -38,23 +47,27 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
     try {
       await updateUsuario(firebaseDocId, usuario);
       const updatedUsuario: Usuario = {
-        id: usuario.id ?? 0, // Proveer un valor por defecto o el valor correcto
+        id: usuario.id ?? 0,
         nombre: usuario.nombre ?? "",
         correo_electronico: usuario.correo_electronico ?? "",
         direccion_envio: usuario.direccion_envio ?? "",
         es_admin: usuario.es_admin ?? false,
-        contrasena: "", // No se debe actualizar la contraseña aquí
-        fecha_registro: "", // Asumir que esta propiedad no cambia
-        firebaseDocId, // Incluir el firebaseDocId
+        contrasena: "",
+        fecha_registro: "",
+        firebaseDocId,
       };
-      
+
       Swal.fire({
         icon: "success",
         title: "Usuario actualizado",
         text: "Los cambios se han guardado correctamente.",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
+      }).then(() => {
+        onClose();
       });
-      onUsuarioUpdated(updatedUsuario); // Llamar con el usuario actualizado
+      onUsuarioUpdated(updatedUsuario);
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
       Swal.fire({
@@ -62,6 +75,8 @@ const UsuarioEditForm: React.FC<UsuarioEditFormProps> = ({ firebaseDocId, onUsua
         title: "Error",
         text: "Hubo un problema al actualizar el usuario.",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
       });
     }
   };

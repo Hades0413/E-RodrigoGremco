@@ -1,13 +1,16 @@
 import type { Producto } from "../../../services/productoService";
 import { X } from "lucide-react";
 import "../../../styles/producto/ProductoDetailsForm.css";
+
 interface ProductoDetailsFormProps {
   producto: Producto;
+  categoriaNombre: string;
   onClose: () => void;
 }
 
 export default function ProductoDetailsForm({
   producto,
+  categoriaNombre,
   onClose,
 }: ProductoDetailsFormProps) {
   return (
@@ -35,7 +38,7 @@ export default function ProductoDetailsForm({
             <strong>Stock Disponible:</strong> {producto.stock_disponible}
           </p>
           <p>
-            <strong>Categoría ID:</strong> {producto.categoria_id}
+            <strong>Categoría:</strong> {categoriaNombre} {/* Muestra el nombre de la categoría */}
           </p>
           {producto.imagen_producto && (
             <div className="product-image">

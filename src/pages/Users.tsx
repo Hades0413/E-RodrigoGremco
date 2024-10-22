@@ -60,6 +60,8 @@ const Users: React.FC = () => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "No, cancelar",
+      background: "#000",
+      color: "#fff",
     });
 
     if (result.isConfirmed) {
@@ -74,11 +76,13 @@ const Users: React.FC = () => {
           setTotalPages(Math.ceil(updatedUsuarios.length / itemsPerPage));
           return updatedUsuarios;
         });
-        Swal.fire(
-          "¡Eliminado!",
-          `El usuario "${nombre}" fue eliminado correctamente.`,
-          "success"
-        );
+        Swal.fire({
+          title: "¡Eliminado!",
+          text: `El usuario "${nombre}" fue eliminado correctamente.`,
+          icon: "success",
+          background: "#000",
+          color: "#fff",
+        });
       } catch (error) {
         setError("Error al eliminar el usuario.");
       } finally {
@@ -288,6 +292,7 @@ const Users: React.FC = () => {
               <UsuarioEditForm
                 firebaseDocId={selectedUsuarioId}
                 onUsuarioUpdated={handleUsuariosUpdated}
+                onClose={handleCloseEdit}
               />
             )}
             <button className="cancel-btn" onClick={handleCloseEdit}>
@@ -301,7 +306,10 @@ const Users: React.FC = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="modal-title">Crear Usuario</h2>
-            <UsuarioCreateForm onUsuarioCreated={handleUsuariosUpdated} />
+            <UsuarioCreateForm
+              onUsuarioCreated={handleUsuariosUpdated}
+              onClose={handleCloseCreate}
+            />
             <button className="cancel-btn" onClick={handleCloseCreate}>
               Cerrar
             </button>

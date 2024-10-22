@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap");
 
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -83,6 +82,28 @@
 .icon {
   width: 24px;
   height: 24px;
+}
+
+.selectcategoria {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #9932cc;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.selectcategoria:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(153, 50, 204, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.selectcategoria option {
+  background-color: #fff;
+  color: #000;
 }
 
 .form-group input,

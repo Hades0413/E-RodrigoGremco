@@ -8,16 +8,20 @@ import {
 import FileDescription from "../../icons/Inventory";
 import { Gamepad, DollarSign, Package, Image } from "lucide-react";
 import Category from "../../icons/Category";
+import { storage } from "../../../firebase/firebase.config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "../../../styles/producto/ProductoCreateForm.css";
 
 interface ProductoCreateFormProps {
   onClose: () => void;
   onProductoCreated: (producto: Producto) => void;
+  categorias: { id: number; nombre: string }[];
 }
 
 const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
   onClose,
   onProductoCreated,
+  categorias,
 }) => {
   const [nuevoProducto, setNuevoProducto] = useState<
     Omit<Producto, "id" | "fecha_adicion">
@@ -30,8 +34,13 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
     imagen_producto: "",
   });
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     const isNumberInput =
@@ -44,6 +53,20 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
     }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+
+      // Crear una URL de vista previa para la imagen
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const formatDate = (date: Date): string => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -51,31 +74,56 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
     return `${day}-${month}-${year}`;
   };
 
+  const uploadImage = async (file: File) => {
+    const storageRef = ref(storage, `images/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    return url;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = await fetchNextProductId();
-    const productoConId = {
-      ...nuevoProducto,
-      id,
-      fecha_adicion: formatDate(new Date()),
-    };
-    const success = await createProducto(productoConId);
-    if (success) {
-      Swal.fire({
-        icon: "success",
-        title: "Producto creado",
-        text: "El producto se ha creado correctamente.",
-        confirmButtonText: "Aceptar",
-      });
-      onProductoCreated(productoConId); // Llama al callback para actualizar la lista
-      onClose();
+
+    if (selectedImage) {
+      const imageUrl = await uploadImage(selectedImage);
+      const productoConId = {
+        ...nuevoProducto,
+        id,
+        imagen_producto: imageUrl,
+        fecha_adicion: formatDate(new Date()),
+      };
+      const success = await createProducto(productoConId);
+      if (success) {
+        Swal.fire({
+          icon: "success",
+          title: "Producto creado",
+          text: "El producto se ha creado correctamente.",
+          confirmButtonText: "Aceptar",
+          background: "#000",
+          color: "#fff",
+        });
+        onProductoCreated(productoConId);
+        onClose();
+      } else {
+        console.error("Error al crear el producto.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Hubo un problema al crear el producto.",
+          confirmButtonText: "Aceptar",
+          background: "#000",
+          color: "#fff",
+        });
+      }
     } else {
-      console.error("Error al crear el producto.");
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Hubo un problema al crear el producto.",
+        text: "Por favor, seleccione una imagen.",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
       });
     }
   };
@@ -145,41 +193,38 @@ const ProductoCreateForm: React.FC<ProductoCreateFormProps> = ({
               />
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-group half-width">
-              <label htmlFor="categoria_id">
-                <Category className="icon" />
-                <span>ID de Categoría</span>
-              </label>
-              <input
-                id="categoria_id"
-                name="categoria_id"
-                type="number"
-                value={nuevoProducto.categoria_id}
-                onChange={handleInputChange}
-                required
-                placeholder="ID de categoría"
-              />
-            </div>
-            <div className="form-group half-width">
-              <label htmlFor="imagen_producto">
-                <Image className="icon" />
-                <span>URL de la Imagen</span>
-              </label>
-              <input
-                id="imagen_producto"
-                name="imagen_producto"
-                type="text"
-                value={nuevoProducto.imagen_producto}
-                onChange={handleInputChange}
-                placeholder="URL de la imagen"
-              />
-            </div>
+          <div className="form-group half-width">
+            <label htmlFor="categoria_id">
+              <Category className="icon" />
+              <span>Categoría</span>
+            </label>
+            <select
+              className="form-group half-width selectcategoria"
+              id="categoria_id"
+              name="categoria_id"
+              value={nuevoProducto.categoria_id}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Seleccione una categoría</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.nombre}
+                </option>
+              ))}
+            </select>
           </div>
-          {nuevoProducto.imagen_producto && (
+          <div className="form-group">
+            <label htmlFor="imagen_producto">
+              <Image className="icon" />
+              <span>Seleccionar Imagen</span>
+            </label>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+          </div>
+          {imagePreviewUrl && (
             <img
-              src={nuevoProducto.imagen_producto}
-              alt="Vista previa del producto"
+              src={imagePreviewUrl}
+              alt="Vista previa"
               className="image-preview"
               style={{
                 maxWidth: "100px",

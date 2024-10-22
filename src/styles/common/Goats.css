@@ -76,7 +76,7 @@
   margin-bottom: 0.5rem;
 }
 
-.icon {
+.iconGoats {
   width: 24px;
   height: 24px;
   margin-right: 0.5rem;
@@ -102,7 +102,7 @@
   color: #4a0082;
 }
 
-.card-lider .icon {
+.card-lider .iconGoats {
   stroke: #fffefb;
   filter: drop-shadow(0 0 3px #ffd700);
 }

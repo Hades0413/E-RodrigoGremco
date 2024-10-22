@@ -10,9 +10,10 @@ import Users from "./pages/Users";
 import Producto from "./pages/Producto";
 import Categoria from "./pages/Categoria";
 import Preguntas from "./pages/Preguntas";
-import Goats from "./pages/Goats"; // Añade esta línea para importar el componente Goats
+import Goats from "./pages/Goats";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import Error404 from "./pages/Error404";
 
 function App() {
   return (
@@ -70,7 +71,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* Añade esta nueva ruta para el componente Goats */}
               <Route
                 path="/goats"
                 element={
@@ -80,6 +80,7 @@ function App() {
                 }
               />
             </Route>
+            <Route path="*" element={<Error404 />} />
           </Routes>
         </Router>
       </LoadingProvider>

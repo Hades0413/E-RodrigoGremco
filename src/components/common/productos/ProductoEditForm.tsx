@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebase.config";
-import type { Producto } from "../../../services/productoService";
+import { storage } from "../../../firebase/firebase.config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import type { Producto, Categoria } from "../../../services/productoService";
 import Swal from "sweetalert2";
 import {
   X,
@@ -15,18 +17,22 @@ import {
 
 interface ProductoEditFormProps {
   producto: Producto;
+  categorias: Categoria[];
   onClose: () => void;
-  onProductoUpdated: (updatedProducto: Producto) => void; // Nueva propiedad
+  onProductoUpdated: (updatedProducto: Producto) => void;
 }
 
 export default function ProductoEditForm({
   producto,
+  categorias,
   onClose,
-  onProductoUpdated, // Recibiendo la nueva propiedad
+  onProductoUpdated,
 }: ProductoEditFormProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Producto>(producto);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
   useEffect(() => {
     setFormData(producto);
@@ -34,7 +40,9 @@ export default function ProductoEditForm({
   }, [producto]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -48,6 +56,19 @@ export default function ProductoEditForm({
     }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -58,9 +79,20 @@ export default function ProductoEditForm({
 
     try {
       const productoRef = doc(db, "productos", producto.firebaseDocId);
+
+      // Actualizar el documento en Firestore
+      if (selectedImage) {
+        // Subir la nueva imagen a Firebase Storage
+        const imageRef = ref(storage, `productos/${producto.firebaseDocId}`);
+        await uploadBytes(imageRef, selectedImage);
+
+        // Obtener la URL de la imagen
+        const imageUrl = await getDownloadURL(imageRef);
+        formData.imagen_producto = imageUrl; // Actualiza la URL de la imagen
+      }
+
       await updateDoc(productoRef, { ...formData });
 
-      // Notificar al componente padre sobre la actualización
       onProductoUpdated({ ...formData, firebaseDocId: producto.firebaseDocId });
 
       Swal.fire({
@@ -68,6 +100,8 @@ export default function ProductoEditForm({
         text: "El producto fue editado correctamente.",
         icon: "success",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
       });
 
       onClose();
@@ -110,16 +144,23 @@ export default function ProductoEditForm({
             <div className="form-group half-width">
               <label htmlFor="categoria_id">
                 <Tag className="icon" />
-                <span>Categoría ID</span>
+                <span>Categoría</span>
               </label>
-              <input
-                type="number"
+              <select
+                className="form-group half-width selectcategoria"
                 id="categoria_id"
                 name="categoria_id"
                 value={formData.categoria_id}
                 onChange={handleInputChange}
                 required
-              />
+              >
+                <option value="">Seleccione una categoría</option>
+                {categorias.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>
+                    {categoria.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div className="form-group">
@@ -167,18 +208,12 @@ export default function ProductoEditForm({
           <div className="form-group">
             <label htmlFor="imagen_producto">
               <Image className="icon" />
-              <span>Imagen del Producto</span>
+              <span>Seleccionar Imagen</span>
             </label>
-            <input
-              type="text"
-              id="imagen_producto"
-              name="imagen_producto"
-              value={formData.imagen_producto}
-              onChange={handleInputChange}
-            />
-            {formData.imagen_producto && (
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {imagePreviewUrl && (
               <img
-                src={formData.imagen_producto}
+                src={imagePreviewUrl}
                 alt="Vista previa del producto"
                 className="image-preview"
                 style={{

@@ -19,6 +19,10 @@ export interface Producto {
   categoria_id: number;
   firebaseDocId?: string;
 }
+export interface Categoria {
+  id: number;
+  nombre: string;
+}
 
 export const fetchProductos = async (): Promise<Producto[]> => {
   try {

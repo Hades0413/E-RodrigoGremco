@@ -89,6 +89,8 @@ export default function CategoriaTable() {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "No, cancelar",
+      background: "#000",
+      color: "#fff",
     });
 
     if (result.isConfirmed) {
@@ -100,6 +102,8 @@ export default function CategoriaTable() {
           title: "¡Eliminado!",
           text: `La categoría "${nombre}" fue eliminada correctamente.`,
           icon: "success",
+          background: "#000",
+          color: "#fff",
         });
       } catch (error) {
         setError("Error al eliminar la categoría.");
@@ -126,6 +130,8 @@ export default function CategoriaTable() {
         icon: "success",
         title: "Categoría creada",
         text: "La categoría se ha creado con éxito.",
+        background: "#000",
+        color: "#fff",
       });
       handleCloseModal();
     } catch (error) {
@@ -141,6 +147,8 @@ export default function CategoriaTable() {
         icon: "success",
         title: "Categoría actualizada",
         text: "La categoría se ha actualizado con éxito.",
+        background: "#000",
+        color: "#fff",
       });
       handleCloseModal();
     }

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import Swal from "sweetalert2";
@@ -11,11 +11,13 @@ import { Usuario } from "../../../services/usuarioService";
 import "../../../styles/users/UsuarioCreateForm.css";
 
 interface UsuarioCreateFormProps {
-  onUsuarioCreated: (nuevoUsuario: Usuario) => void; // Cambiado para recibir el nuevo usuario
+  onUsuarioCreated: (nuevoUsuario: Usuario) => void;
+  onClose: () => void;
 }
 
 const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
   onUsuarioCreated,
+  onClose,
 }) => {
   const [nuevoUsuario, setNuevoUsuario] = useState<
     Omit<Usuario, "id" | "fecha_registro">
@@ -50,8 +52,12 @@ const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
         title: "Usuario creado",
         text: "El usuario se ha creado correctamente.",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
+      }).then(() => {
+        onClose();
       });
-      onUsuarioCreated(usuarioConId); // Llamar con el nuevo usuario
+      onUsuarioCreated(usuarioConId);
     } else {
       console.error("Error al crear el usuario.");
       Swal.fire({
@@ -59,6 +65,8 @@ const UsuarioCreateForm: React.FC<UsuarioCreateFormProps> = ({
         title: "Error",
         text: "Hubo un problema al crear el usuario.",
         confirmButtonText: "Aceptar",
+        background: "#000",
+        color: "#fff",
       });
     }
   };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import { fetchProductos, deleteProducto } from "../services/productoService";
-import type { Producto } from "../services/productoService";
+import { fetchCategorias } from "../services/categoriaService";
+import type { Producto, Categoria } from "../services/productoService";
 import ProductoDetailsForm from "../components/common/productos/ProductoDetailsForm";
 import ProductoEditForm from "../components/common/productos/ProductoEditForm";
 import ProductoCreateForm from "../components/common/productos/ProductoCreateForm";
@@ -16,9 +17,11 @@ import {
 } from "lucide-react";
 import "../styles/producto/Producto.css";
 import "../styles/common/SearchTable.css";
+import { Typography } from "@mui/material";
 
 const Producto: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [filteredProductos, setFilteredProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProducto, setSelectedProducto] = useState<Producto | null>(
@@ -47,9 +50,21 @@ const Producto: React.FC = () => {
     }
   }, []);
 
+  const loadCategorias = useCallback(async () => {
+    try {
+      const categoriasData = await fetchCategorias();
+      setCategorias(categoriasData);
+    } catch (error) {
+      setError("Error al cargar las categorías.");
+    }
+  }, []);
+
   useEffect(() => {
-    loadProductos();
-  }, [loadProductos]);
+    const fetchData = async () => {
+      await Promise.all([loadProductos(), loadCategorias()]);
+    };
+    fetchData();
+  }, [loadProductos, loadCategorias]);
 
   const handleSearch = useCallback((filteredData: Producto[]) => {
     setFilteredProductos(filteredData);
@@ -87,6 +102,8 @@ const Producto: React.FC = () => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "No, cancelar",
+      background: "#000",
+      color: "#fff",
     });
 
     if (result.isConfirmed) {
@@ -94,11 +111,12 @@ const Producto: React.FC = () => {
       try {
         await deleteProducto(producto.firebaseDocId!);
         await loadProductos();
-
         Swal.fire({
           title: "¡Eliminado!",
           text: `El producto "${producto.nombre}" fue eliminado correctamente.`,
           icon: "success",
+          background: "#000",
+          color: "#fff",
         });
       } catch (error) {
         setError("Error al eliminar el producto.");
@@ -131,6 +149,11 @@ const Producto: React.FC = () => {
     setCreateModalOpen(false);
   };
 
+  const getCategoriaNombre = (categoriaId: number) => {
+    const categoria = categorias.find((cat) => cat.id === categoriaId);
+    return categoria ? categoria.nombre : "Sin categoría";
+  };
+
   const paginatedProductos = filteredProductos.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -138,7 +161,13 @@ const Producto: React.FC = () => {
 
   return (
     <div className="producto-container">
-      <h1 className="page-title">Gestión de Productos</h1>
+      <Typography
+        variant="h2"
+        component="h1"
+        sx={{ textAlign: "center", marginBottom: 2 }}
+      >
+        Gestión de Productos
+      </Typography>
 
       <div className="search-and-create">
         <button className="create-btn" onClick={handleCreateClick}>
@@ -162,7 +191,7 @@ const Producto: React.FC = () => {
               <th>Descripción</th>
               <th>Precio (USD)</th>
               <th>Stock</th>
-              <th>Categoría ID</th>
+              <th>Categoría</th>
               <th>Imagen</th>
               <th>Acciones</th>
             </tr>
@@ -182,7 +211,7 @@ const Producto: React.FC = () => {
                   <td>{producto.descripcion || "Sin descripción"}</td>
                   <td>${producto.precio.toFixed(2)}</td>
                   <td>{producto.stock_disponible}</td>
-                  <td>{producto.categoria_id}</td>
+                  <td>{getCategoriaNombre(producto.categoria_id)}</td>
                   <td>
                     {producto.imagen_producto ? (
                       <img
@@ -262,6 +291,7 @@ const Producto: React.FC = () => {
       {modalOpen && selectedProducto && (
         <ProductoDetailsForm
           producto={selectedProducto}
+          categoriaNombre={getCategoriaNombre(selectedProducto.categoria_id)}
           onClose={handleCloseModal}
         />
       )}
@@ -272,9 +302,11 @@ const Producto: React.FC = () => {
             <h2 className="modal-title">Editar Producto</h2>
             <ProductoEditForm
               producto={selectedProducto}
+              categorias={categorias}
               onClose={handleCloseEditModal}
               onProductoUpdated={handleProductoUpdated}
             />
+
             <button className="cancel-btn" onClick={handleCloseEditModal}>
               Cancelar
             </button>
@@ -283,12 +315,13 @@ const Producto: React.FC = () => {
       )}
 
       {createModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={handleCloseCreateModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2 className="modal-title">Crear Producto</h2>
             <ProductoCreateForm
               onClose={handleCloseCreateModal}
               onProductoCreated={handleProductoCreated}
+              categorias={categorias}
             />
           </div>
         </div>
