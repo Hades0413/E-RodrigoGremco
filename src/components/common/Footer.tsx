@@ -84,7 +84,7 @@ const Footer = () => {
             </div>
             <div className="footer-contact-details">
               <EmailIcon />
-              <p>plutonsac@hotmail.com</p>
+              <p>RodrigoGremco@hotmail.com</p>
             </div>
           </div>
         </div>
@@ -109,7 +109,9 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {currentYear} Plutón. Todos los derechos reservados.</p>
+        <p>
+          &copy; {currentYear} Rodrigo Gremco. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );

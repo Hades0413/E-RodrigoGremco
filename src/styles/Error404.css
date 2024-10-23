@@ -60,6 +60,8 @@
   position: relative;
   animation: slideRight 0.4s ease-out forwards;
   will-change: transform, opacity;
+  mask-image: linear-gradient(black 80%, transparent);
+  filter: saturate(1.5);
 }
 
 .error-right {
