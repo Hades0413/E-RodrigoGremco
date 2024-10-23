@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Home, ArrowRight } from 'lucide-react';
 import "../styles/Error404.css";
 import errorImage from "../assets/img/error404.png";
 
@@ -8,25 +9,33 @@ const Error404: React.FC = () => {
     <div className="error-404-container">
       <nav className="error-nav">
         <div className="error-nav__logo">
-          <Link className="error-link" to="/home">
+          <Link className="error-link" to="/">
+            <Home size={24} strokeWidth={1.5} />
             RODRIGO GREMCO
           </Link>
         </div>
       </nav>
 
-      <div className="error-404-content">
-        <div className="error-header">
-          <h1 className="error-title">404</h1>
-          <h3 className="error-subtitle">¡Página No Encontrada!</h3>
+      <div className="error-content">
+        <div className="error-left">
+          <img 
+            loading="lazy" 
+            src={errorImage} 
+            alt="404 illustration" 
+            className="error-image"
+          />
         </div>
-        <img loading="lazy" src={errorImage} alt="not found" className="error-image" />
-        <div className="error-footer">
+
+        <div className="error-right">
+          <h1 className="error-title">404</h1>
+          <h2 className="error-subtitle">¡Página No Encontrada!</h2>
           <p className="error-message">
-            Lo sentimos, la página que solicitaste no pudo ser encontrada. ¡Por
-            favor, vuelve a la página principal!
+            Lo sentimos, no pudimos encontrar la página que buscas. 
+            Te invitamos a volver al inicio para continuar explorando.
           </p>
-          <Link to="/home" className="error-home-button">
+          <Link to="/" className="error-home-button">
             IR A INICIO
+            <ArrowRight size={20} strokeWidth={2} />
           </Link>
         </div>
       </div>
