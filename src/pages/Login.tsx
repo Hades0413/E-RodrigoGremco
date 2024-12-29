@@ -19,14 +19,12 @@ export default function LoginForm() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Intentando iniciar sesión con:", { email, password });
 
     try {
       const userData = await loginWithEmail(email, password);
-      console.log("Inicio de sesión exitoso:", userData);
 
       if (userData) {
-        setCurrentUser(userData);
+        setCurrentUser(userData);  // Actualiza el estado global
         Swal.fire({
           title: "Éxito",
           text: `Inicio de sesión exitoso, bienvenido ${userData.nombre}!`,
@@ -36,9 +34,7 @@ export default function LoginForm() {
         });
 
         navigate("/home");
-        console.log("Redirigiendo a /home");
       } else {
-        console.log("No se encontró el usuario.");
         Swal.fire({
           title: "Error",
           text: "Credenciales incorrectas.",
@@ -64,7 +60,8 @@ export default function LoginForm() {
     try {
       const result = await loginWithGoogle();
       const user = result.user;
-      console.log("Inicio de sesión con Google exitoso:", user);
+
+      setCurrentUser(user);  // Actualiza el estado global
 
       Swal.fire({
         title: "Bienvenido!",
@@ -75,7 +72,6 @@ export default function LoginForm() {
       });
 
       navigate("/home");
-      console.log("Redirigiendo a /home");
     } catch (error) {
       console.error("Error al iniciar sesión con Google: ", error);
       Swal.fire({
@@ -93,7 +89,8 @@ export default function LoginForm() {
     try {
       const result = await loginWithGitHub();
       const user = result.user;
-      console.log("Inicio de sesión con GitHub exitoso:", user);
+
+      setCurrentUser(user);  // Actualiza el estado global
 
       Swal.fire({
         title: "Bienvenido!",
@@ -104,9 +101,7 @@ export default function LoginForm() {
       });
 
       navigate("/home");
-      console.log("Redirigiendo a /home");
     } catch (error) {
-      console.error("Error al iniciar sesión con GitHub: ", error);
       Swal.fire({
         title: "Error",
         text: "Error al iniciar sesión con GitHub.",

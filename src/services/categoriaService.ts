@@ -55,7 +55,6 @@ export const fetchCategorias = async () => {
       nombre: doc.data().nombre,
     }));
 
-    console.log("Categorías obtenidas:", categoriasList);
     return categoriasList;
   } catch (err) {
     console.error("Error al obtener las categorías: ", err);

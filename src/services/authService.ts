@@ -95,8 +95,6 @@ export const loginWithEmail = async (correo: string, contrasena: string) => {
       throw new Error("Contraseña incorrecta");
     }
 
-    console.log("Inicio de sesión exitoso:", userData);
-    // Retorna el usuario o lo que necesites
     return userData;
   } catch (error: unknown) {
     if (error instanceof Error) {
